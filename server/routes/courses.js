@@ -4,10 +4,9 @@ const auth = require(".././middleware/authmw")
 router.post("/add-course", auth, async (req, res) => {
         const {courseName} = req.body;
         const {userId} = req.user;
-        if (courseName && userId) {
+        if (courseName) {
             try {
-                const course = new Course({courseName, userId})
-                await course.save()
+                const course = await Course.create({courseName, userId})
                 res.status(200).json({course, resultCode: 0})
             } catch (err) {
                 res.status(500).json({error: err, resultCode: 1})
