@@ -1,16 +1,18 @@
 const jwt = require("jsonwebtoken");
+const ApiError = require('../exceptions/api-error');
 const config = process.env;
 
 const verifyToken = (req, res, next) => {
+
     const token = req.headers["x-access-token"];
-    if (!token) {
-        return res.status(403).send("A token is required for authentication");
-    }
     try {
+        if (!token) {
+            return next(ApiError.UnauthorizedError());
+        }
         const decoded = jwt.verify(token, config.TOKEN_KEY);
         req.user = decoded.user;
     } catch (err) {
-        return res.status(401).send("Invalid Token");
+        return next(ApiError.UnauthorizedError());
     }
     return next();
 };
