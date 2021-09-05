@@ -3,9 +3,12 @@ const ApiError = require('../exceptions/api-error');
 const config = process.env;
 
 const verifyToken = (req, res, next) => {
-
-    const token = req.headers["x-access-token"];
     try {
+        const authorizationHeader = req.headers.authorization;
+        if (!authorizationHeader) {
+            return next(ApiError.UnauthorizedError());
+        }
+        const token = authorizationHeader.split(' ')[1];
         if (!token) {
             return next(ApiError.UnauthorizedError());
         }

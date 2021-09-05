@@ -1,67 +1,80 @@
-import {ResultCodeForCapcthaEnum, ResultCodesEnum} from "../api/api";
-import {stopSubmit} from "redux-form";
-/*import {authAPI} from '../api/auth-api';*/
+import {ResultCodesEnum} from "../../dal/api";
+/*import {stopSubmit} from "redux-form";*/
+import AuthService from "../../dal/auth-api"
 import {BaseThunkType, InferActionsTypes} from '../Store';
-import {Action} from 'redux';
 import {FormAction} from 'redux-form/lib/actions';
+import {IUser} from "../../types/types";
 
 let initialState = {
-    userId: null as (number | null),
-    email: null as string | null,
-    username: null as string | null,
+    user: null as (IUser | null),
     isAuth: false,
 };
 
-const authReducer = (state = initialState, action: ActionsType): InitialStateType => {
+export enum AuthActions {
+    SET_USER_DATA,
+    LOGOUT
+}
+
+const authReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
     switch (action.type) {
-        case 'SN/auth/SET_USER_DATA':
+        case AuthActions.SET_USER_DATA:
             return {
                 ...state,
                 ...action.payload
             }
+        case AuthActions.LOGOUT: {
+            localStorage.removeItem("accessToken")
+            return {...state, ...action.payload}
+        }
         default:
             return state;
     }
 }
 
 export const actions = {
-    setAuthUserData: (userId: number | null, email: string | null, username: string | null, isAuth: boolean) => ({
-        type: 'SN/auth/SET_USER_DATA', payload: {userId, email, username, isAuth}
-    } as const)
+    setAuthUserData: (userId: string | null, email: string | null, isAdmin: boolean, isAuth: boolean,) => ({
+        type: AuthActions.SET_USER_DATA, payload: {user: {userId, email, isAdmin}, isAuth}
+    } as const),
+    logout: () => ({
+        type: AuthActions.LOGOUT,
+        payload: {user: {userId: null, email: null, isAdmin: false}, isAuth: false}
+    })
 }
 
 export const getAuthUserData = (): ThunkType => async (dispatch) => {
-    let meData = await authAPI.me()
+    let meData = await AuthService.me()
     if (meData.resultCode === ResultCodesEnum.Success) {
-        let {id, username, email} = meData.data;
-        dispatch(actions.setAuthUserData(id, email, username, true))
-    }
-}
-
-export const login = (email: string, password: string, rememberMe: boolean, captcha: string): ThunkType => async (dispatch) => {
-    let data = await authAPI.login(email, password, rememberMe, captcha);
-    if (data.resultCode === ResultCodesEnum.Success) {
-        // success, get auth data
-        dispatch(getAuthUserData())
+        let {userId, email, isAdmin} = meData.user;
+        dispatch(actions.setAuthUserData(userId, email, isAdmin, true))
     } else {
+        console.log(meData.message);
+    }
+}
 
-        let message = data.error ? data.error : "Some error";
+export const login = (email: string, password: string): ThunkType => async (dispatch) => {
+    let data = await AuthService.login(email, password);
+    if (data.resultCode === ResultCodesEnum.Success) {
+        const accessToken = data.accessToken || ''
+        localStorage.setItem('accessToken', accessToken)
+        await dispatch(getAuthUserData())
+    }
+    /*} else {
+        let message = data.message ? data.message : "Unknown Error";
         dispatch(stopSubmit("login", {_error: message}));
+    }*/
+}
+export const register = (email: string, password: string,password2:string): ThunkType => async (dispatch) => {
+    if (password === password2) {
+        let data = await AuthService.register(email, password);
+        if (data.resultCode === ResultCodesEnum.Success) {
+            const accessToken = data.accessToken || ''
+            localStorage.setItem('accessToken', accessToken)
+            await dispatch(getAuthUserData())
+        }
     }
 }
-
-
-
-export const logout = (): ThunkType => async (dispatch: any) => {
-    let response = await authAPI.logout()
-
-    if (response.data.resultCode === 0) {
-        dispatch(actions.setAuthUserData(null, null, null, false))
-    }
-}
-
-export default authReducer;
-
-export type InitialStateType = typeof initialState;
+export type InitialStateType = typeof initialState
 type ActionsType = InferActionsTypes<typeof actions>
 type ThunkType = BaseThunkType<ActionsType | FormAction>
+
+export default authReducer;

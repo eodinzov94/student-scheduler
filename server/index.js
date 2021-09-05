@@ -5,22 +5,17 @@ require('dotenv').config()
 const PORT = process.env.PORT || 3000
 const authRoute = require("./routes/auth")
 const coursesRoute = require("./routes/courses")
-const auth = require("./middleware/authmw");
+const cors = require('cors')
 const errorMiddleware = require('./middleware/errormw');
 app.use(express.json())
+app.use(cors({
+    credentials: true,
+    origin: process.env.CLIENT_URL
+}));
 app.use("/api/auth", authRoute)
 app.use("/api/courses", coursesRoute)
 app.use(errorMiddleware);
 
-app.post("/", auth, (req, res) => {
-    res.status(200).send("Welcome 🙌 ");
-});
-app.post("/admin", auth, (req, res) => {
-    if (!req.user.isAdmin){
-        return res.status(500).send("You are not admin");
-    }
-    res.status(200).send("Welcome 🙌 Admin ");
-});
 
 async function runServer(){
     try {
@@ -28,7 +23,7 @@ async function runServer(){
             useNewUrlParser: true,
             useUnifiedTopology: true
         }, () => console.log("Connected to MongoDB"))
-        app.listen(PORT, () => console.log(`Server started on PORT = ${PORT}`))
+        app.listen(PORT, () => console.log(`Server started on PORT : ${PORT}`))
     }
     catch (e) {
         console.log(e)

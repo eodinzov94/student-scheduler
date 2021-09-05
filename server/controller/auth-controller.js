@@ -11,7 +11,7 @@ class AuthController{
             }
             const {email, password} = req.body;
             const token = await authService.register(email, password)
-            res.json({AccessToken:token,resultCode:0});
+            res.json({accessToken:token,resultCode:0});
         } catch (err) {
             next(err)
         }
@@ -20,7 +20,7 @@ class AuthController{
         try {
             const {email, password} = req.body;
             const token = await authService.login(email,password)
-            res.json({AccessToken:token,resultCode:0});
+            res.json({accessToken:token,resultCode:0});
         } catch (err) {
             next(err)
         }

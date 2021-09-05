@@ -1,8 +1,10 @@
 import {Action, applyMiddleware, combineReducers, createStore ,compose} from "redux";
 import thunk, { ThunkAction } from "redux-thunk";
 import {reducer as formReducer} from 'redux-form'
+import authReducer from "./reducers/auth-reducer";
 let rootReducer = combineReducers({
     form: formReducer,
+    auth:authReducer
 })
 
 type RootReducerType = typeof rootReducer;
@@ -17,3 +19,4 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)))
 // @ts-ignore
 window.__store__ = store
+export default store
