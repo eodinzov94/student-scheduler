@@ -51,6 +51,7 @@ class CoursesService {
         }
         course.tasks.pull({_id: taskId})
         await course.save()
+        return course
     }
     async editTask(courseId,userId,taskId,fieldsToUpdate){
         const course = await Course.findOne({_id: courseId,userId, tasks: {$elemMatch: {_id: taskId}}})

@@ -7,3 +7,10 @@
     align-items: center;
     background-color: lightgray;
 }
+.alert{
+    margin-bottom: 10px;
+}
+.card{
+    width:500px;
+    min-height: 200px;
+}

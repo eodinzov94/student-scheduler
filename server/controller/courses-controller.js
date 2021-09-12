@@ -85,8 +85,8 @@ class CoursesController {
         try {
             const {courseId, taskId} = req.params
             const {userId} = req.user;
-            await coursesService.deleteTask(courseId,userId,taskId)
-            res.json({resultCode: 0})
+            const course = await coursesService.deleteTask(courseId,userId,taskId)
+            res.json({resultCode: 0,course})
         } catch (err) {
             next(err);
         }

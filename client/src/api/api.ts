@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {IUser} from "../types/types";
+import {ICourse, IUser} from "../types/types";
 
 export const API_URL = `http://localhost:5000/api`
 
@@ -15,19 +15,21 @@ export enum ResultCodesEnum {
     Success = 0,
     Error = 1
 }
-export interface AuthResponse{
+export interface Response{
     message?:string
     errors?: any[]
-    accessToken?: string
-    user?:IUser
     resultCode: number
 }
-export interface AuthMeResponse{
-    message?:string
-    errors?: any[]
+export interface AuthResponse extends Response{
     accessToken?: string
-    user:IUser
-    resultCode: Number
 }
-
+export interface AuthMeResponse extends AuthResponse{
+    user:IUser
+}
+export interface CoursesResponse extends Response{
+    courses:ICourse[]
+}
+export interface CourseResponse extends Response{
+    course:ICourse
+}
 export default $api;

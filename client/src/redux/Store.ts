@@ -1,10 +1,13 @@
-import {Action, applyMiddleware, combineReducers, createStore ,compose} from "redux";
-import thunk, { ThunkAction } from "redux-thunk";
-import {reducer as formReducer} from 'redux-form'
+import {Action, applyMiddleware, combineReducers, compose, createStore} from "redux";
+import thunk, {ThunkAction} from "redux-thunk";
 import authReducer from "./reducers/auth-reducer";
+import appReducer from "./reducers/app-reducer";
+import coursesReducer from "./reducers/courses-reducer";
+
 let rootReducer = combineReducers({
-    form: formReducer,
-    auth:authReducer
+    auth:authReducer,
+    app:appReducer,
+    courses:coursesReducer
 })
 
 type RootReducerType = typeof rootReducer;
