@@ -6,8 +6,9 @@ let initialState = {
 };
 
 export type InitialStateType = typeof initialState
-type ActionsType = InferActionsTypes<typeof appActions>
-
+export enum AppActionTypes {
+    SET_LOADING
+}
 const appReducer = (state = initialState, action: ActionsType): InitialStateType => {
     switch (action.type) {
         case AppActionTypes.SET_LOADING:
@@ -19,9 +20,7 @@ const appReducer = (state = initialState, action: ActionsType): InitialStateType
             return state;
     }
 }
-export enum AppActionTypes {
-    SET_LOADING
-}
+
 
 export const appActions = {
     setLoading: (loading: boolean) => ({
@@ -42,5 +41,5 @@ export const initializeApp = () => (dispatch: any) => {
     }
 }
 
-
+type ActionsType = InferActionsTypes<typeof appActions>
 export default appReducer;

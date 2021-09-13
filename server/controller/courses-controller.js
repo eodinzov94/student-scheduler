@@ -73,7 +73,7 @@ class CoursesController {
             CoursesController.checkForValidationErrors(req)
             const {courseId} = req.params
             const {userId} = req.user;
-            const task = coursesService.generateNewTaskFromBody(req.body,userId)
+            const task = coursesService.generateNewTaskFromBody(req.body)
             const course = await coursesService.addTask(task,courseId,userId)
             res.json({course, resultCode: 0})
         } catch (err) {

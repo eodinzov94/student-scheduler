@@ -13,8 +13,7 @@ let initialState = {
 export enum AuthActions {
     SET_USER_DATA,
     LOGOUT,
-    SET_AUTH_ERROR,
-    SET_LOADING
+    SET_AUTH_ERROR
 }
 
 const authReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
@@ -24,10 +23,8 @@ const authReducer = (state: InitialStateType = initialState, action: ActionsType
                 ...state,
                 ...action.payload
             }
-        case AuthActions.LOGOUT: {
-            localStorage.removeItem("accessToken")
+        case AuthActions.LOGOUT:
             return {...state, ...action.payload}
-        }
         case AuthActions.SET_AUTH_ERROR:
             return {
                 ...state,
@@ -82,6 +79,10 @@ export const login = (email: string, password: string): ThunkType => async (disp
         dispatch(appActions.setLoading(false))
     }
 
+}
+export const logout = ():ThunkType => async (dispatch ) => {
+    localStorage.removeItem("accessToken")
+    dispatch(authActions.logout())
 }
 export const register = (email: string, password: string): ThunkType => async (dispatch) => {
     try {

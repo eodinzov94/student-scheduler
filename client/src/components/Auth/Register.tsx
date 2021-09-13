@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {connect, useDispatch, useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {authActions, register} from '../../redux/reducers/auth-reducer';
 import {AppStateType} from "../../redux/Store";
 import {Redirect} from "react-router-dom";

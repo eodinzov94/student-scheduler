@@ -1,10 +1,11 @@
 const Course = require('../models/Course')
 const ApiError = require('../exceptions/api-error')
-const UserDto = require('../dto/user-dto')
+const CourseDto = require('../dto/course-dto')
 
 class CoursesService {
     async addCourse(courseName, userId) {
-        return await Course.create({courseName, userId})
+        const course = await Course.create({courseName, userId})
+        return CourseDto.courseToDto(course)
     }
 
     async editCourse(courseId, courseName, userId) {
@@ -14,17 +15,18 @@ class CoursesService {
         }
         course.courseName = courseName
         await course.save()
-        return course;
+        return CourseDto.courseToDto(course);
     }
 
     async getAllCourses(userId) {
         const courses = await Course.find({userId})
-        return courses
+        const coursesDto = courses.map(course => CourseDto.courseToDto(course))
+        return coursesDto
     }
 
     async getOneCourse(courseId, userId) {
         const course = await Course.findOne({_id: courseId, userId})
-        return course
+        return CourseDto.courseToDto(course)
     }
 
     async deleteCourse(courseId, userId) {
@@ -36,13 +38,13 @@ class CoursesService {
     }
 
     async addTask(task, courseId, userId) {
-        const course = await Course.findOneAndUpdate({_id: courseId, userId})
+        const course = await Course.findOneAndUpdate({_id: courseId, userId},
+        { $push: { tasks: task  } },{new:true})
         if (!course) {
             throw ApiError.BadRequest("You can edit only your course!")
         }
-        course.tasks.push(task)
         await course.save()
-        return course
+        return CourseDto.courseToDto(course)
     }
     async deleteTask (courseId,userId,taskId){
         const course = await Course.findOne({_id: courseId,userId, tasks: {$elemMatch: {_id: taskId}}})
@@ -51,7 +53,7 @@ class CoursesService {
         }
         course.tasks.pull({_id: taskId})
         await course.save()
-        return course
+        return CourseDto.courseToDto(course)
     }
     async editTask(courseId,userId,taskId,fieldsToUpdate){
         const course = await Course.findOne({_id: courseId,userId, tasks: {$elemMatch: {_id: taskId}}})
@@ -68,14 +70,13 @@ class CoursesService {
         if(!updatedCourse){
             throw new ApiError (500, "Unknown error")
         }
-        return updatedCourse
+        return CourseDto.courseToDto(updatedCourse)
     }
-    generateNewTaskFromBody(body, userId) {
+    generateNewTaskFromBody(body) {
         return {
             taskType: body.taskType,
             priority: body.priority || "Low",
             expectedTime: body.expectedTime || null,
-            userId,
             deadline: body.deadline || null
         }
     }

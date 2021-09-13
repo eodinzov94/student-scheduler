@@ -5,7 +5,8 @@ const TaskObj = {
         expectedTime: {type: Number, default: null},
         timeTook: {type: Number, default: null},
         deadline: {type: Date, default: null},
-        completed: {type: Boolean, default: false}
+        completed: {type: Boolean, default: false},
+        createdAt:{type: Date, default: Date.now()}
     }
 const CourseSchema = new mongoose.Schema(
     {
