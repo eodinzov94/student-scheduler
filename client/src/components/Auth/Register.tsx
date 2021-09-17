@@ -35,9 +35,6 @@ const Register:React.FC = (props) => {
         }
     }
     useEffect(showError,[error])
-    if(isAuth){
-        return <Redirect to="/"/>
-    }
     const registerHandler = ()=>{
         dispatch(register(email,password))
     }

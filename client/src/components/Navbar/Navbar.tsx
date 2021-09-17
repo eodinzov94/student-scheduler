@@ -7,6 +7,7 @@ import {Layout, Menu} from "antd";
 import {LoginOutlined, UserOutlined} from "@ant-design/icons";
 import SubMenu from 'antd/lib/menu/SubMenu';
 import {logout} from "../../redux/reducers/auth-reducer";
+import Title from 'antd/lib/typography/Title';
 
 const Navbar: React.FC = () => {
     const dispatch = useDispatch()
@@ -16,12 +17,13 @@ const Navbar: React.FC = () => {
         dispatch(logout())
     }
     return (
-        <Layout.Header>
+        <Layout.Header className={"header"}>
             {isAuth ?
                 <Menu theme="dark" mode="horizontal">
                     <SubMenu key="sub-menu-user" icon={<UserOutlined/>} title={user?.email}>
                         <Menu.Item key="logout" onClick={onLogout} icon={<LoginOutlined/>}>Logout</Menu.Item>
                     </SubMenu>
+                    <Menu.Item key="courses"> <Link to="/courses">My Courses</Link></Menu.Item>
                 </Menu>
 
                 :

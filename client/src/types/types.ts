@@ -17,9 +17,9 @@ export interface ITask {
     key: string
     taskType:string
     priority:string
-    expectedTime:number
-    deadline: Moment
+    expectedTime:number | null
+    deadline: Moment | null
     completed:boolean
-    timeTook:number
-    createdAt: Moment
+    timeTook:number | null
+    createdAt: Moment | string
 }

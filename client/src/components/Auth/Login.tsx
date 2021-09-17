@@ -2,14 +2,12 @@ import React, {useEffect, useState} from 'react';
 import "./auth.css"
 import {useDispatch, useSelector} from "react-redux";
 import {authActions, login} from '../../redux/reducers/auth-reducer';
-import {Redirect} from "react-router-dom";
 import {AppStateType} from "../../redux/Store";
 import {Button, Card, Form, Input, Layout, notification, Row} from "antd";
 
 
 const Login: React.FC = (props) => {
     const dispatch = useDispatch()
-    const isAuth = useSelector<AppStateType>(state=> state.auth.isAuth) as boolean
     const error = useSelector<AppStateType>(state => state.auth.error) as string
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -27,9 +25,6 @@ const Login: React.FC = (props) => {
     useEffect(showError,[error])
     function onFinish() {
         dispatch(login(email,password))
-    }
-    if (isAuth) {
-        return <Redirect to="/"/>
     }
     return (
         <Layout>

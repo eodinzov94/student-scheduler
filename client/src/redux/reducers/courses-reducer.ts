@@ -7,7 +7,12 @@ let initialState = {
     error: '',
     isLoading: false
 };
-
+const inputCourse:ICourse = {
+    courseId: 'inputCourse',
+    key:'inputCourse',
+    courseName:"",
+    tasks: []
+}
 export enum CourseActions {
     SET_COURSES_DATA='SET_COURSES_DATA',
     ADD_COURSE='ADD_COURSE',
@@ -17,7 +22,9 @@ export enum CourseActions {
     DELETE_TASK='DELETE_TASK',
     ADD_TASK='ADD_TASK',
     SET_LOADING='SET_LOADING',
-    SET_ERROR='SET_ERROR'
+    SET_ERROR='SET_ERROR',
+    INPUT_COURSE='INPUT_COURSE',
+    REMOVE_INPUT_COURSE ='REMOVE_INPUT_COURSE'
 }
 
 const coursesReducer = (state = initialState, action: ActionsType): InitialStateType => {
@@ -33,6 +40,7 @@ const coursesReducer = (state = initialState, action: ActionsType): InitialState
                 ...state,
                 ...action.payload
             }
+        case CourseActions.INPUT_COURSE:
         case CourseActions.ADD_COURSE:
             return {
                 ...state,
@@ -52,6 +60,11 @@ const coursesReducer = (state = initialState, action: ActionsType): InitialState
                 ...state,
                 courses: [...state.courses.filter(c => c.courseId !== action.payload.courseId)]
             }
+        case CourseActions.REMOVE_INPUT_COURSE:
+            return {
+                ...state,
+                courses: state.courses.filter(c=>c.courseId!=='inputCourse')
+            }
 
         default:
             return state;
@@ -59,6 +72,8 @@ const coursesReducer = (state = initialState, action: ActionsType): InitialState
 }
 
 export const courseActions = {
+    removeInputCourse: ()=> ({type: CourseActions.REMOVE_INPUT_COURSE} as const),
+    inputCourse: () => ({type: CourseActions.INPUT_COURSE, payload: {course:inputCourse}} as const),
     setCoursesData: (courses: ICourse[]) => ({type: CourseActions.SET_COURSES_DATA, payload: {courses}} as const),
     deleteCourse: (courseId: string) => ({type: CourseActions.DELETE_COURSE, payload: {courseId}} as const),
     addNewCourse: (course: ICourse) => ({type: CourseActions.ADD_COURSE, payload: {course}} as const),
