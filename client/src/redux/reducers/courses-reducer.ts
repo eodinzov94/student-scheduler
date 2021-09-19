@@ -2,17 +2,21 @@ import {AppDispatch, BaseThunkType, InferActionsTypes} from '../Store';
 import {ICourse, ITask} from "../../types/types";
 import CoursesService from "../../api/course-api";
 
-let initialState = {
-    courses: [] as ICourse[],
-    error: '',
-    isLoading: false
-};
+
 const inputCourse:ICourse = {
     courseId: 'inputCourse',
     key:'inputCourse',
     courseName:"",
-    tasks: []
+    tasks: [],
 }
+
+let initialState = {
+    courses: [] as ICourse[],
+    error: '',
+    isLoading: false,
+    inputTask:null as (null | ITask)
+};
+
 export enum CourseActions {
     SET_COURSES_DATA='SET_COURSES_DATA',
     ADD_COURSE='ADD_COURSE',
@@ -24,7 +28,8 @@ export enum CourseActions {
     SET_LOADING='SET_LOADING',
     SET_ERROR='SET_ERROR',
     INPUT_COURSE='INPUT_COURSE',
-    REMOVE_INPUT_COURSE ='REMOVE_INPUT_COURSE'
+    REMOVE_INPUT_COURSE ='REMOVE_INPUT_COURSE',
+    SET_INPUT_TASK = 'SET_INPUT_TASK'
 }
 
 const coursesReducer = (state = initialState, action: ActionsType): InitialStateType => {
@@ -65,7 +70,11 @@ const coursesReducer = (state = initialState, action: ActionsType): InitialState
                 ...state,
                 courses: state.courses.filter(c=>c.courseId!=='inputCourse')
             }
-
+        case CourseActions.SET_INPUT_TASK:
+            return {
+                ...state,
+                inputTask: action.payload.inputTask
+            }
         default:
             return state;
     }
@@ -83,6 +92,7 @@ export const courseActions = {
     deleteTask: (course: ICourse) => ({type: CourseActions.DELETE_TASK, payload: {course}} as const),
     setLoading: (loading: boolean) => ({type: CourseActions.SET_LOADING, payload: {isLoading: loading}} as const),
     setError: (msg: string) => ({type: CourseActions.SET_ERROR, payload: {error: msg}} as const),
+    setInputTask:(task:(ITask | null)) =>({type: CourseActions.SET_INPUT_TASK, payload: {inputTask:task}} as const),
 }
 
 

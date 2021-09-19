@@ -29,15 +29,14 @@ export const appActions = {
     })
 }
 
-export const initializeApp = () => (dispatch: any) => {
+export const initializeApp = () => async (dispatch: any) => {
     try {
-        let promise = dispatch(getAuthUserData());
-        Promise.all([promise])
-            .then(() => {
-                dispatch(appActions.setLoading(false));
-            });
+        dispatch(appActions.setLoading(true));
+        await dispatch(getAuthUserData());
     }catch (e) {
         console.log(e);
+    }finally {
+        dispatch(appActions.setLoading(false));
     }
 }
 

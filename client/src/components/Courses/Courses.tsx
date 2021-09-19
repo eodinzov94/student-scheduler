@@ -1,4 +1,4 @@
-import {Button, Card, Row, Table} from 'antd';
+import {Button, Popconfirm, Table} from 'antd';
 import React, {useEffect} from 'react';
 import './table.css'
 import {useDispatch, useSelector} from "react-redux";
@@ -6,8 +6,8 @@ import {AppStateType} from "../../redux/Store";
 import {courseActions, deleteCourse, editCourse, getCoursesData} from "../../redux/reducers/courses-reducer";
 import {ICourse} from "../../types/types";
 import {CourseCell} from './CourseCell';
-import {DeleteOutlined} from '@ant-design/icons';
-import Tasks from "./Tasks";
+import {CloseCircleOutlined} from '@ant-design/icons';
+import TasksTable from "./TasksTable";
 
 const DataTable = () => {
     const calcCourseHours = (course: ICourse) => {
@@ -20,7 +20,7 @@ const DataTable = () => {
     }, [])
     const columns = [
         {
-            title: 'Course', dataIndex: 'courseName', key: 'courseId',
+            title: 'Course', dataIndex: 'courseName', key: 'courseId',width:'33%',
             render: (_: any, course: ICourse) => <CourseCell course={course}
                                                              onEdit={(courseName: string) => {
                                                                  dispatch(editCourse(courseName, course.courseId))
@@ -30,16 +30,20 @@ const DataTable = () => {
             />,
         },
         {
-            title: 'Time for course', dataIndex: 'total', key: 'courseId',
+            title: 'Time for course', dataIndex: 'total', key: 'courseId',width:'33%',
             render: (_: any, course: ICourse) => <span>{calcCourseHours(course)} Hour(s)</span>
         },
         {
             title: 'Action',
             dataIndex: '',
-            key: 'courseId',
-            render: (_: any, course: ICourse) => <a onClick={() => {
-                dispatch(deleteCourse(course.courseId))
-            }}><DeleteOutlined/> Delete</a>,
+            key: 'courseId',width:'33%',
+            render: (_: any, course: ICourse) =>
+                <Popconfirm title="Sure to delete?" onConfirm={() => {
+                    dispatch(deleteCourse(course.courseId))
+                }}>
+                    <a  className='remove-btn'><CloseCircleOutlined /></a>
+                </Popconfirm>
+            ,
 
         },
     ];
@@ -49,13 +53,13 @@ const DataTable = () => {
     }
     const isLoading = useSelector<AppStateType>(state => state.courses.isLoading) as boolean
     return (
-        <Row justify="center" align="middle" className="h100">
-            <Card className="table h100">
+
                 <Table
+                    className="table h100 minWidth"
                     loading={isLoading}
                     columns={columns}
                     expandable={{
-                        expandedRowRender: course => <Tasks key={course.courseId} tasks={course.tasks} courseId={course.courseId}/>,
+                        expandedRowRender: course => <TasksTable key={course.courseId} course={course}/>,
                     }}
                     dataSource={data}
                     pagination={false}
@@ -69,8 +73,7 @@ const DataTable = () => {
                 />
 
 
-            </Card>
-        </Row>
+
     );
 };
 

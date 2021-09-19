@@ -1,17 +1,14 @@
 import { Calendar } from 'antd';
 import React from 'react';
 
-const MiniCalendar = () => {
+export const MiniCalendar = () => {
     function onPanelChange(value:any, mode:any) {
         console.log(value, mode);
     }
     return (
-        <div>
-            <div className="calendar">
-                <Calendar fullscreen={false} onPanelChange={onPanelChange} />
+            <div className="minWidth" style={{padding:40}}>
+                <Calendar onPanelChange={onPanelChange} />
             </div>
-        </div>
     );
 };
 
-export default MiniCalendar;

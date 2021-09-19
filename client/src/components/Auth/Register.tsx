@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {authActions, register} from '../../redux/reducers/auth-reducer';
 import {AppStateType} from "../../redux/Store";
-import {Redirect} from "react-router-dom";
 import {Button, Card, Form, Input, Layout, notification, Row} from "antd";
 
 const formItemLayout = {
@@ -18,7 +17,6 @@ const formItemLayout = {
 const Register:React.FC = (props) => {
     const error = useSelector<AppStateType>(state => state.auth.error) as string
     const dispatch = useDispatch()
-    const isAuth = useSelector<AppStateType>(state=> state.auth.isAuth)
     const [email,setEmail]= useState('')
     const [password,setPassword]= useState('')
     const [password2,setPassword2]= useState('')

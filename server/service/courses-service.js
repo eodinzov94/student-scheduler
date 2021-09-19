@@ -70,6 +70,7 @@ class CoursesService {
         if(!updatedCourse){
             throw new ApiError (500, "Unknown error")
         }
+        console.log(updatedCourse);
         return CourseDto.courseToDto(updatedCourse)
     }
     generateNewTaskFromBody(body) {

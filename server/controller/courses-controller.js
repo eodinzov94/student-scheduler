@@ -96,13 +96,9 @@ class CoursesController {
         try {
             const {courseId, taskId} = req.params
             const {userId} = req.user
-            const course = await Course.findOne({_id: courseId,userId, tasks: {$elemMatch: {_id: taskId}}})
-            if (!course) {
-                throw ApiError.BadRequest("You can edit only your task")
-            }
             const fieldsToUpdate = coursesService.generateTaskFieldsToUpdateFromBody(req.body)
             const updatedCourse = await coursesService.editTask(courseId,userId,taskId,fieldsToUpdate)
-             res.json({updatedCourse, resultCode: 0})
+             res.json({course:updatedCourse, resultCode: 0})
         } catch (err) {
             next(err);
         }

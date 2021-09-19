@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Input} from 'antd';
 import {ICourse} from "../../types/types";
 import {useDispatch} from "react-redux";
-import {addCourse, courseActions, CourseActions} from "../../redux/reducers/courses-reducer";
+import {addCourse, courseActions} from "../../redux/reducers/courses-reducer";
 
 
 interface CourseRowProps {
@@ -33,13 +33,13 @@ export const CourseCell: React.FC<CourseRowProps> = ({course, onEdit, isNew}) =>
         setEditMode(true)
     }
     return (
-        <>
+        <span className='trigger-input'>
             {editMode ?
                         <Input onChange={(e) => setName(e.target.value)} value={name}
                                placeholder={name} onPressEnter={save} onBlur={save} autoFocus={true}/>
                 :
-                <span style={{cursor: "pointer"}} onClick={enableEditMode}>{name}</span>}
-        </>
+                <span onClick={enableEditMode}>{name}</span>}
+        </span>
     );
 };
 
