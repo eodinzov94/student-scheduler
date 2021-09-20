@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 const TaskObj = {
-        taskType: {type: String, required:true},
+        taskType: {type: String, default:''},
         priority: {type: String, default: "Low"},
         expectedTime: {type: Number, default: null},
         timeTook: {type: Number, default: null},

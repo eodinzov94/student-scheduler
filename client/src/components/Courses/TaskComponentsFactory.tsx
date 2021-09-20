@@ -1,45 +1,48 @@
 import {ITask} from "../../types/types";
-import {Badge, DatePicker, Input, InputNumber, Select, Tag} from "antd";
-import React, {FC} from "react";
+import {Badge, DatePicker, Input, InputNumber, Select, Tag, Tooltip} from "antd";
+import React, {FC, useState} from "react";
 import {useSelector} from "react-redux";
 import {AppStateType} from "../../redux/Store";
 import moment from "moment";
 import {getPriorityColor} from "../../utils/HelpFunctions";
+import {EditOutlined, QuestionCircleOutlined} from "@ant-design/icons";
 
-export const ShowComponentSelector = (dataIndex: string,edit:(task: ITask)=>void) => {
+export const ShowComponentSelector = (dataIndex: string, edit: (task: ITask) => void) => {
     switch (dataIndex) {
         case 'taskType':
-            return (_: any, task: ITask) => <Tag key={task.key} className='tag' onClick={()=>edit(task)}>{task.taskType}</Tag>
+            return (_: any, task: ITask) => <Tag key={task.key} className='tag'
+                                                 onClick={() => edit(task)}>{task.taskType}</Tag>
         case 'priority':
             return (_: any, task: ITask) => {
-                const  color = getPriorityColor(task.priority)
-                return(
-                <Tag onClick={()=>edit(task) }
-                     key={task.key} color={color} className='tag'>{task.priority.toLocaleUpperCase()}</Tag>)}
+                const color = getPriorityColor(task.priority)
+                return (
+                    <Tag onClick={() => edit(task)}
+                         key={task.key} color={color} className='tag'>{task.priority.toLocaleUpperCase()}</Tag>)
+            }
         case 'expectedTime':
             return (_: any, task: ITask) => (
-                <Tag onClick={()=>edit(task)}
-                    key={task.key} className='tag'>{task.expectedTime? task.expectedTime + ' Hour(s)':null}</Tag>)
+                <Tag onClick={() => edit(task)}
+                     key={task.key} className='tag'>{task.expectedTime ? task.expectedTime + ' Hour(s)' : null}</Tag>)
         case 'timeTook':
             return (_: any, task: ITask) => {
-                const timeTook = task.completed? (task.timeTook? task.timeTook + ' Hour(s)':null):null
+                const timeTook = task.completed ? (task.timeTook ? task.timeTook + ' Hour(s)' : null) : null
                 let color = 'default';
-                if(timeTook && task.expectedTime){
-                    color = (task.expectedTime - (task.timeTook as number) >=0 )? 'success':'red'
+                if (timeTook && task.expectedTime) {
+                    color = (task.expectedTime - (task.timeTook as number) >= 0) ? 'success' : 'red'
                 }
                 return (
                     <Tag onClick={() => edit(task)}
                          key={task.key} className='tag' color={color}>{timeTook}</Tag>)
             }
         case 'deadline':
-            return (_: any, task: ITask) => <Tag key={task.key} onClick={()=>edit(task)}
+            return (_: any, task: ITask) => <Tag key={task.key} onClick={() => edit(task)}
                                                  className='tag'>{task.deadline ?
-                                                     moment(task.deadline).format('YYYY-MM-DD')
+                moment(task.deadline).format('YYYY-MM-DD')
                 : null}</Tag>
         case 'completed':
-            return (_: any, task: ITask) => (<span className='status' onClick={()=>edit(task)}>
+            return (_: any, task: ITask) => (<span className='status' onClick={() => edit(task)}>
         {task.completed ? <Badge status="success" text={'Finished'}/> :
-            <Badge status="warning" text={'Pending'} />}
+            <Badge status="warning" text={'Pending'}/>}
     </span>)
         default :
             return () => <span>Non Exist dataIndex : {dataIndex}</span>
@@ -48,39 +51,49 @@ export const ShowComponentSelector = (dataIndex: string,edit:(task: ITask)=>void
 
 
 export interface InputProps {
-    setTask:React.Dispatch<React.SetStateAction<ITask | null>>
+    setTask: React.Dispatch<React.SetStateAction<ITask | null>>
 }
 
 
-
-const TaskTypeInput:FC<InputProps> = ({setTask}) => {
+const TaskTypeInput: FC<InputProps> = ({setTask}) => {
     const task = useSelector<AppStateType>(state => state.courses.inputTask) as ITask | null
+    const [writeMode, setWriteMode] = useState(false)
     return (
-        (
-            <Select value={task?.taskType || 'HW'}
-                    onChange={(value) => {
-                        if (value !== task?.taskType) {
-                            setTask({...task as ITask, taskType:value})
-                        }
-                    }}>
-                <Select.Option value="HW">HW</Select.Option>
-                <Select.Option value="Assigment">Assigment</Select.Option>
-                <Select.Option value="Exam">Exam</Select.Option>
-                <Select.Option value="MidTermExam">Midterm Exam</Select.Option>
-                <Select.Option value="Other">Other</Select.Option>
-            </Select>)
+        <>
+            {writeMode ? <Input onChange={(e) => {
+                    if (e.target.value !== task?.taskType) {
+                        setTask({...task as ITask, taskType: e.target.value})
+                    }
+                }
+                } value={task?.taskType} autoFocus={true}/>
+                :
+                <Select value={task?.taskType || 'HW'}
+                        onChange={(value) => {
+                            if (value !== task?.taskType && value !== 'Other') {
+                                setTask({...task as ITask, taskType: value})
+                            } else if (value === 'Other') {
+                                setWriteMode(true)
+                            }
+                        }}>
+                    <Select.Option value="HW">HW</Select.Option>
+                    <Select.Option value="Assigment">Assigment</Select.Option>
+                    <Select.Option value="Exam">Exam</Select.Option>
+                    <Select.Option value="MidTermExam">Midterm Exam</Select.Option>
+                    <Select.Option value="Other"><EditOutlined /></Select.Option>
+                </Select>
+            }
+        </>
+
     );
 };
 
 
-
-
-const PriorityInput:FC<InputProps> = ({setTask}) => {
+const PriorityInput: FC<InputProps> = ({setTask}) => {
     const task = useSelector<AppStateType>(state => state.courses.inputTask) as ITask | null
     return (
         <Select value={task?.priority} onChange={(value) => {
             if (task?.priority) {
-                setTask({...task, priority:value})
+                setTask({...task, priority: value})
             }
         }}>
             <Select.Option value="High">High</Select.Option>
@@ -90,13 +103,14 @@ const PriorityInput:FC<InputProps> = ({setTask}) => {
     );
 };
 
-const ExpectedTimeInput:FC<InputProps> = ({setTask}) => {
+const ExpectedTimeInput: FC<InputProps> = ({setTask}) => {
     const task = useSelector<AppStateType>(state => state.courses.inputTask) as ITask | null
+    const InputValue = (task && task.expectedTime) ? task.expectedTime : undefined
     return (
-        <InputNumber min={0} max={1000} step={0.1}  onChange={
+        <InputNumber min={0} max={1000} step={0.1} value={InputValue} onChange={
             (value) => {
                 if (value !== task?.expectedTime) {
-                    setTask({...task as ITask, expectedTime:value})
+                    setTask({...task as ITask, expectedTime: value})
                 }
             }
         }/>
@@ -104,40 +118,48 @@ const ExpectedTimeInput:FC<InputProps> = ({setTask}) => {
 };
 
 
-const TimeTookInput:FC<InputProps> = ({setTask}) => {
+const TimeTookInput: FC<InputProps> = ({setTask}) => {
     const task = useSelector<AppStateType>(state => state.courses.inputTask) as ITask | null
+    const InputValue = (task && task.timeTook) ? task.timeTook : undefined
     return (
-        <InputNumber min={0} max={1000} step={0.1} disabled={!task?.completed} onChange={
-            (value) => {
-                if (value !== task?.timeTook) {
-                    setTask({...task as ITask, timeTook:value})
-                }
+        <>
+            {!task?.completed ?<Tooltip title="Status 'Finished' should be selected to activate this field"
+                                        ><QuestionCircleOutlined /> </Tooltip>
+                :
+                <InputNumber min={0} max={1000} step={0.1} value={InputValue} disabled={!task?.completed}
+                             onChange={
+                                 (value) => {
+                                     if (value !== task?.timeTook) {
+                                         setTask({...task as ITask, timeTook: value})
+                                     }
+                                 }
+                             }/>
             }
-        }/>
+
+        </>
     );
 };
 
 
-
-const DeadlineInput:FC<InputProps> = ({setTask}) => {
+const DeadlineInput: FC<InputProps> = ({setTask}) => {
     const task = useSelector<AppStateType>(state => state.courses.inputTask) as ITask | null
     return (
         <DatePicker
             onSelect={(value) => {
                 if (value !== task?.deadline) {
-                    setTask({...task as ITask, deadline:value})
+                    setTask({...task as ITask, deadline: value})
                 }
             }}/>
     );
 };
 
-const CompletedInput:FC<InputProps> = ({setTask}) => {
+const CompletedInput: FC<InputProps> = ({setTask}) => {
     const task = useSelector<AppStateType>(state => state.courses.inputTask) as ITask | null
     return (
         <Select value={task?.completed ? 'Finished' : 'Pending'}
                 onChange={(value) => {
                     const completed = value === 'Finished'
-                    setTask({...task as ITask, completed})
+                    setTask({...task as ITask, completed, timeTook: 0})
                 }}>
             <Select.Option value="Finished">Finished</Select.Option>
             <Select.Option value="Pending">Pending</Select.Option>

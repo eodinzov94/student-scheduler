@@ -90,10 +90,7 @@ class CoursesService {
         if(body.expectedTime){
             fieldsToUpdate["tasks.$.expectedTime"] = body.expectedTime
         }
-        if(body.timeTook){
-            fieldsToUpdate["tasks.$.timeTook"] = body.timeTook
-        }
-        if(body.timeTook){
+        if(body.timeTook!==null && body.timeTook!== undefined){
             fieldsToUpdate["tasks.$.timeTook"] = body.timeTook
         }
         if(body.deadline){
