@@ -74,7 +74,7 @@ const TaskTypeInput: FC<InputProps> = ({setTask}) => {
                             } else if (value === 'Other') {
                                 setWriteMode(true)
                             }
-                        }}>
+                        }} className="w100">
                     <Select.Option value="HW">HW</Select.Option>
                     <Select.Option value="Assigment">Assigment</Select.Option>
                     <Select.Option value="Exam">Exam</Select.Option>
@@ -95,7 +95,7 @@ const PriorityInput: FC<InputProps> = ({setTask}) => {
             if (task?.priority) {
                 setTask({...task, priority: value})
             }
-        }}>
+        }} className="w100">
             <Select.Option value="High">High</Select.Option>
             <Select.Option value="Medium">Medium</Select.Option>
             <Select.Option value="Low">Low</Select.Option>
@@ -144,7 +144,7 @@ const TimeTookInput: FC<InputProps> = ({setTask}) => {
 const DeadlineInput: FC<InputProps> = ({setTask}) => {
     const task = useSelector<AppStateType>(state => state.courses.inputTask) as ITask | null
     return (
-        <DatePicker
+        <DatePicker className="w100"
             onSelect={(value) => {
                 if (value !== task?.deadline) {
                     setTask({...task as ITask, deadline: value})
@@ -156,7 +156,7 @@ const DeadlineInput: FC<InputProps> = ({setTask}) => {
 const CompletedInput: FC<InputProps> = ({setTask}) => {
     const task = useSelector<AppStateType>(state => state.courses.inputTask) as ITask | null
     return (
-        <Select value={task?.completed ? 'Finished' : 'Pending'}
+        <Select value={task?.completed ? 'Finished' : 'Pending'} className="w100"
                 onChange={(value) => {
                     const completed = value === 'Finished'
                     setTask({...task as ITask, completed, timeTook: 0})

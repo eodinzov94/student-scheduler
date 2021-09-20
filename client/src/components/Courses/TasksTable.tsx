@@ -73,11 +73,11 @@ const TasksTable: FC<TasksProps> = ({course}) => {
         dispatch(deleteTask(courseId, taskId))
     }
     const columns = [
-        {title: 'Task Type', dataIndex: 'taskType', key: 'taskId', editable: true},
-        {title: 'Priority', dataIndex: 'priority', key: 'taskId', editable: true},
-        {title: 'Expected time', dataIndex: 'expectedTime', key: 'taskId', editable: true},
-        {title: 'Actual time', dataIndex: 'timeTook', key: 'taskId', editable: true},
-        {title: 'Deadline', dataIndex: 'deadline', key: 'taskId', editable: true},
+        {title: 'Task Type', dataIndex: 'taskType', key: 'taskId', editable: true ,width:'17%'},
+        {title: 'Priority', dataIndex: 'priority', key: 'taskId', editable: true ,width:'12%'},
+        {title: 'Expected time', dataIndex: 'expectedTime', key: 'taskId', editable: true,width:'12%'},
+        {title: 'Actual time', dataIndex: 'timeTook', key: 'taskId', editable: true,width:'12%'},
+        {title: 'Deadline', dataIndex: 'deadline', key: 'taskId', editable: true,width:'15%'},
         {
             title: 'Time left', key: 'taskId', editable: false, render:
                 (_: any, task: ITask) => {
@@ -86,9 +86,9 @@ const TasksTable: FC<TasksProps> = ({course}) => {
                         {date}</Tag>
                 }
         },
-        {title: 'Status', dataIndex: 'completed', key: 'taskId', editable: true},
+        {title: 'Status', dataIndex: 'completed', key: 'taskId', editable: true,width:'12%'},
         {
-            title: 'Action', key: 'taskId', editable: false, render: (_: any, task: ITask) => {
+            title: 'Action', key: 'taskId', editable: false,width:'8%', render: (_: any, task: ITask) => {
                 const editable = isEditing(task);
                 return editable ? (
                     <span>
