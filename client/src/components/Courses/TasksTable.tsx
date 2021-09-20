@@ -8,7 +8,7 @@ import {InputSelector, ShowComponentSelector} from "./TaskComponentsFactory";
 import {CloseCircleOutlined, PlusOutlined} from "@ant-design/icons";
 import {EditableTaskCell} from "./EditableTaskCell";
 import {AppStateType} from "../../redux/Store";
-import {checkTaskChanges, getColorAndTimeLeft} from "../../utils/HelpFunctions";
+import {checkTaskChanges, getColorAndTimeLeft, priorityToNumber} from "../../utils/HelpFunctions";
 
 
 interface TasksProps {
@@ -74,7 +74,18 @@ const TasksTable: FC<TasksProps> = ({course}) => {
     }
     const columns = [
         {title: 'Task Type', dataIndex: 'taskType', key: 'taskId', editable: true ,width:'17%'},
-        {title: 'Priority', dataIndex: 'priority', key: 'taskId', editable: true ,width:'12%'},
+        {title: 'Priority', dataIndex: 'priority', key: 'taskId', editable: true ,width:'12%',filterMultiple:true,
+            filters: [
+                { text: 'High', value: 'HIGH' },
+                { text: 'Medium', value: 'MEDIUM' },
+                { text: 'Low', value: 'LOW' },
+            ],
+            sorter: {
+                compare: (a:ITask, b:ITask) =>priorityToNumber(a.priority)-priorityToNumber(b.priority) ,
+                multiple:1
+            },
+            onFilter: (value:boolean | string |number, task:ITask) => task.priority.toLocaleUpperCase() === value,
+        },
         {title: 'Expected time', dataIndex: 'expectedTime', key: 'taskId', editable: true,width:'12%'},
         {title: 'Actual time', dataIndex: 'timeTook', key: 'taskId', editable: true,width:'12%'},
         {title: 'Deadline', dataIndex: 'deadline', key: 'taskId', editable: true,width:'15%'},
@@ -86,7 +97,18 @@ const TasksTable: FC<TasksProps> = ({course}) => {
                         {date}</Tag>
                 }
         },
-        {title: 'Status', dataIndex: 'completed', key: 'taskId', editable: true,width:'12%'},
+        {title: 'Status', dataIndex: 'completed',  editable: true,width:'12%',filterMultiple:true,
+            filters: [
+                { text: 'Finished', value: true },
+                { text: 'Pending', value: false },
+            ],
+            sorter: {
+                compare: (a:ITask, b:ITask) =>  (+a.completed)- (+b.completed),
+                multiple:2
+            },
+            onFilter: (value:boolean | string |number, task:ITask) => task.completed === value,
+        },
+
         {
             title: 'Action', key: 'taskId', editable: false,width:'8%', render: (_: any, task: ITask) => {
                 const editable = isEditing(task);
