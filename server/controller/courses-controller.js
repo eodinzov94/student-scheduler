@@ -1,7 +1,6 @@
 const coursesService = require('../service/courses-service');
 const {validationResult} = require('express-validator');
 const ApiError = require('../exceptions/api-error');
-const Course = require("../models/Course")
 
 
 class CoursesController {
@@ -98,7 +97,7 @@ class CoursesController {
             const {userId} = req.user
             const fieldsToUpdate = coursesService.generateTaskFieldsToUpdateFromBody(req.body)
             const updatedCourse = await coursesService.editTask(courseId,userId,taskId,fieldsToUpdate)
-             res.json({course:updatedCourse, resultCode: 0})
+            res.json({course:updatedCourse, resultCode: 0})
         } catch (err) {
             next(err);
         }

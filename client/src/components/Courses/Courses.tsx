@@ -1,5 +1,5 @@
 import {Button, Popconfirm, Table} from 'antd';
-import React, {useEffect} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import './table.css'
 import {useDispatch, useSelector} from "react-redux";
 import {AppStateType} from "../../redux/Store";
@@ -8,13 +8,15 @@ import {ICourse} from "../../types/types";
 import {CourseCell} from './CourseCell';
 import {CloseCircleOutlined} from '@ant-design/icons';
 import TasksTable from "./TasksTable";
+import { calcCourseHours } from '../../utils/HelpFunctions';
 
+const roundToOneDecimal = (num:number) => Math.round(num *10)/10
 const DataTable = () => {
-    const calcCourseHours = (course: ICourse) => {
-        return course.tasks.map(t => t.expectedTime ? t.expectedTime : 0).reduce((sum, expectedTime) => sum + expectedTime, 0)
-    }
     const dispatch = useDispatch()
     const data = useSelector<AppStateType>(state => state.courses.courses) as ICourse[]
+    let coursesHoursCalc = useMemo(()=>data.map(course => ({key:course.key, courseTotal:roundToOneDecimal(calcCourseHours(course))}) ),[data])
+    let totalHours = useMemo(()=>(roundToOneDecimal(coursesHoursCalc.
+    map(c => c.courseTotal).reduce((sum, courseHours) => sum + courseHours, 0))),[coursesHoursCalc])
     useEffect(() => {
         dispatch(getCoursesData())
     }, [])
@@ -31,7 +33,7 @@ const DataTable = () => {
         },
         {
             title: 'Time for course', dataIndex: 'total', key: 'courseId',width:'33%',
-            render: (_: any, course: ICourse) => <span>{calcCourseHours(course)} Hour(s)</span>
+            render: (_: any, course: ICourse) => <span>{coursesHoursCalc.find(({key})=> key === course.key)?.courseTotal || '0'} Hour(s)</span>
         },
         {
             title: 'Action',
@@ -47,7 +49,6 @@ const DataTable = () => {
 
         },
     ];
-    let totalHours = data.map(c => calcCourseHours(c)).reduce((sum, courseHours) => sum + courseHours, 0)
     const onClickAdd = () => {
         dispatch(courseActions.inputCourse())
     }

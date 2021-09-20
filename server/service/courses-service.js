@@ -20,8 +20,7 @@ class CoursesService {
 
     async getAllCourses(userId) {
         const courses = await Course.find({userId})
-        const coursesDto = courses.map(course => CourseDto.courseToDto(course))
-        return coursesDto
+        return courses.map(course => CourseDto.courseToDto(course))
     }
 
     async getOneCourse(courseId, userId) {
@@ -70,7 +69,6 @@ class CoursesService {
         if(!updatedCourse){
             throw new ApiError (500, "Unknown error")
         }
-        console.log(updatedCourse);
         return CourseDto.courseToDto(updatedCourse)
     }
     generateNewTaskFromBody(body) {
@@ -101,7 +99,7 @@ class CoursesService {
         if(body.deadline){
             fieldsToUpdate["tasks.$.deadline"] = body.deadline
         }
-        if(body.completed){
+        if(body.completed !== null && body.completed !==undefined){
             fieldsToUpdate["tasks.$.completed"] = body.completed
         }
         return fieldsToUpdate

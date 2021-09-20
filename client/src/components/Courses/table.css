@@ -11,9 +11,3 @@
     padding: 4px;
     border: 1px solid darkgrey;
 }
-.remove-btn{
-    color: crimson;
-}
-.remove-btn:hover{
-    color: #d67b33;
-}

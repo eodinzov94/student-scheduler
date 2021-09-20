@@ -1,27 +1,45 @@
 import {ITask} from "../../types/types";
 import {Badge, DatePicker, Input, InputNumber, Select, Tag} from "antd";
 import React, {FC} from "react";
-import moment from "moment";
 import {useSelector} from "react-redux";
 import {AppStateType} from "../../redux/Store";
+import moment from "moment";
+import {getPriorityColor} from "../../utils/HelpFunctions";
 
-export const ShowComponentSelector = (dataIndex: string) => {
+export const ShowComponentSelector = (dataIndex: string,edit:(task: ITask)=>void) => {
     switch (dataIndex) {
         case 'taskType':
-            return (_: any, task: ITask) => <Tag key={task.key} className='tag'>{task.taskType}</Tag>
+            return (_: any, task: ITask) => <Tag key={task.key} className='tag' onClick={()=>edit(task)}>{task.taskType}</Tag>
         case 'priority':
-            return (_: any, task: ITask) => (
-                <Tag key={task.key} color={"volcano"} className='tag'>{task.priority.toLocaleUpperCase()}</Tag>)
+            return (_: any, task: ITask) => {
+                const  color = getPriorityColor(task.priority)
+                return(
+                <Tag onClick={()=>edit(task) }
+                     key={task.key} color={color} className='tag'>{task.priority.toLocaleUpperCase()}</Tag>)}
         case 'expectedTime':
             return (_: any, task: ITask) => (
-                <Tag key={task.key} className='tag'>{(task.expectedTime + ' Hour(s)') || 'unset'}</Tag>)
+                <Tag onClick={()=>edit(task)}
+                    key={task.key} className='tag'>{task.expectedTime? task.expectedTime + ' Hour(s)':null}</Tag>)
+        case 'timeTook':
+            return (_: any, task: ITask) => {
+                const timeTook = task.completed? (task.timeTook? task.timeTook + ' Hour(s)':null):null
+                let color = 'default';
+                if(timeTook && task.expectedTime){
+                    color = (task.expectedTime - (task.timeTook as number) >=0 )? 'success':'red'
+                }
+                return (
+                    <Tag onClick={() => edit(task)}
+                         key={task.key} className='tag' color={color}>{timeTook}</Tag>)
+            }
         case 'deadline':
-            return (_: any, task: ITask) => <Tag key={task.key}
-                                                 className='tag'>{task.deadline}</Tag>
+            return (_: any, task: ITask) => <Tag key={task.key} onClick={()=>edit(task)}
+                                                 className='tag'>{task.deadline ?
+                                                     moment(task.deadline).format('YYYY-MM-DD')
+                : null}</Tag>
         case 'completed':
-            return (_: any, task: ITask) => (<span className='tag'>
+            return (_: any, task: ITask) => (<span className='status' onClick={()=>edit(task)}>
         {task.completed ? <Badge status="success" text={'Finished'}/> :
-            <Badge status="warning" text={'Pending'}/>}
+            <Badge status="warning" text={'Pending'} />}
     </span>)
         default :
             return () => <span>Non Exist dataIndex : {dataIndex}</span>
@@ -75,7 +93,7 @@ const PriorityInput:FC<InputProps> = ({setTask}) => {
 const ExpectedTimeInput:FC<InputProps> = ({setTask}) => {
     const task = useSelector<AppStateType>(state => state.courses.inputTask) as ITask | null
     return (
-        <InputNumber min={0} max={1000} step={0.1} defaultValue={task?.expectedTime || 0} onChange={
+        <InputNumber min={0} max={1000} step={0.1}  onChange={
             (value) => {
                 if (value !== task?.expectedTime) {
                     setTask({...task as ITask, expectedTime:value})
@@ -85,11 +103,26 @@ const ExpectedTimeInput:FC<InputProps> = ({setTask}) => {
     );
 };
 
+
+const TimeTookInput:FC<InputProps> = ({setTask}) => {
+    const task = useSelector<AppStateType>(state => state.courses.inputTask) as ITask | null
+    return (
+        <InputNumber min={0} max={1000} step={0.1} disabled={!task?.completed} onChange={
+            (value) => {
+                if (value !== task?.timeTook) {
+                    setTask({...task as ITask, timeTook:value})
+                }
+            }
+        }/>
+    );
+};
+
+
+
 const DeadlineInput:FC<InputProps> = ({setTask}) => {
     const task = useSelector<AppStateType>(state => state.courses.inputTask) as ITask | null
     return (
         <DatePicker
-            defaultValue={ moment(moment().format(), 'YYYY-MM-DD')}
             onSelect={(value) => {
                 if (value !== task?.deadline) {
                     setTask({...task as ITask, deadline:value})
@@ -101,9 +134,10 @@ const DeadlineInput:FC<InputProps> = ({setTask}) => {
 const CompletedInput:FC<InputProps> = ({setTask}) => {
     const task = useSelector<AppStateType>(state => state.courses.inputTask) as ITask | null
     return (
-        <Select defaultValue={task?.completed ? 'Finished' : 'Pending'}
+        <Select value={task?.completed ? 'Finished' : 'Pending'}
                 onChange={(value) => {
-                    setTask({...task as ITask, completed:value === 'Finished' ? true : false})
+                    const completed = value === 'Finished'
+                    setTask({...task as ITask, completed})
                 }}>
             <Select.Option value="Finished">Finished</Select.Option>
             <Select.Option value="Pending">Pending</Select.Option>
@@ -116,6 +150,8 @@ export const InputSelector = (dataIndex: string) => {
             return TaskTypeInput
         case 'priority':
             return PriorityInput
+        case 'timeTook':
+            return TimeTookInput
         case 'expectedTime':
             return ExpectedTimeInput
         case 'deadline':

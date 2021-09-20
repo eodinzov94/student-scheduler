@@ -1,26 +1,53 @@
 @import '~antd/dist/antd.css';
+
 .h100 {
     min-height: calc(100vh - 64px);
 }
-.content{
+
+.content {
     width: 100%;
     height: 100%;
     margin: auto;
 }
-.minResolution{
+
+.minResolution {
     min-height: calc(100vh - 128px);
     min-width: 880px;
     margin: auto;
 }
-.maxWidth{
+
+.maxWidth {
     max-width: 1200px;
 }
-.calendar{
+
+.calendar {
     width: 300px;
     border: 1px solid #f0f0f0;
     border-radius: 2px;
 }
-.tag:hover{
+
+.tag:hover {
     border: 1px solid darkgrey;
     cursor: pointer;
+}
+
+.status {
+    padding: 3px;
+}
+
+.status:hover {
+    cursor: pointer;
+    background-color: #e5e1e1;
+
+    border-radius: 5px;
+}
+
+.task-row {
+    background-color: #f3f3f3;
+}
+.remove-btn{
+    color: crimson;
+}
+.remove-btn:hover{
+    color: #d67b33;
 }
