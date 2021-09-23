@@ -4,7 +4,16 @@ import {IUser} from '../../types/types';
 import {useDispatch, useSelector} from "react-redux";
 import {AppStateType} from '../../redux/Store';
 import {Layout, Menu} from "antd";
-import {CalendarOutlined, LoginOutlined, LogoutOutlined, ScheduleOutlined, UserAddOutlined, UserOutlined} from "@ant-design/icons";
+import {
+    BarChartOutlined,
+    CalendarOutlined,
+    CaretDownOutlined,
+    LoginOutlined,
+    LogoutOutlined,
+    ScheduleOutlined,
+    UserAddOutlined,
+    UserOutlined
+} from "@ant-design/icons";
 import SubMenu from 'antd/lib/menu/SubMenu';
 import {logout} from "../../redux/reducers/auth-reducer";
 
@@ -19,11 +28,12 @@ const Navbar: React.FC = () => {
         <Layout.Header className={"header minWidth"}>
             {isAuth ?
                 <Menu theme="dark" mode="horizontal">
-                    <SubMenu key="sub-menu-user" icon={<UserOutlined/>} title={user?.email}>
+                    <SubMenu key="sub-menu-user" icon={<UserOutlined/>} title={<>{user?.email} <CaretDownOutlined /></>}>
                         <Menu.Item key="logout" onClick={onLogout} icon={<LogoutOutlined />}> Logout</Menu.Item>
                     </SubMenu>
                     <Menu.Item key="courses"> <Link to="/courses"><ScheduleOutlined /> My Courses</Link></Menu.Item>
                     <Menu.Item key="calendar"> <Link to="/calendar"><CalendarOutlined /> Calendar</Link></Menu.Item>
+                    <Menu.Item key="Chart"> <BarChartOutlined /> Chart</Menu.Item>
                 </Menu>
 
                 :

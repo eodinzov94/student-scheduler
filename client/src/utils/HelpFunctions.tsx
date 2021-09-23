@@ -51,6 +51,22 @@ export const getPriorityColor = (priority: string) => {
     }
 
 }
+
+export const getEventColor = (priority: string) => {
+    switch (priority.toLocaleUpperCase()) {
+        case 'HIGH':
+            return 'error'
+        case 'MEDIUM':
+            return 'warning'
+        case 'LOW':
+            return 'success'
+        default:
+            return 'default'
+    }
+
+}
+
+
 export const priorityToNumber = (priority: string) => {
     switch (priority.toLocaleUpperCase()) {
         case 'HIGH':
@@ -62,4 +78,7 @@ export const priorityToNumber = (priority: string) => {
         default:
             return 0
     }
+}
+function f1(){
+
 }

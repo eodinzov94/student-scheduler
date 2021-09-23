@@ -23,3 +23,10 @@ export interface ITask {
     timeTook:number | null
     createdAt: Moment | string
 }
+
+export interface IEvent {
+    key:string
+    date:Moment
+    courseName: string
+    tasks: ITask[]
+}

@@ -5,14 +5,16 @@
 }
 
 .content {
+    min-width:640px ;
     width: 100%;
     height: 100%;
     margin: auto;
+    aspect-ratio: auto;
 }
 
 .minResolution {
     min-height: calc(100vh - 128px);
-    min-width: 880px;
+    min-width: 900px;
     margin: auto;
 }
 

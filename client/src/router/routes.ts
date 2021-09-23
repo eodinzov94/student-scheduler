@@ -2,7 +2,7 @@ import React from "react";
 import Login from "../components/Auth/Login";
 import Register from "../components/Auth/Register";
 import Courses from "../components/Courses/Courses";
-import {MiniCalendar} from "../components/Calendar/Calendar";
+import {Calendar} from "../components/Calendar/Calendar";
 
 export interface IRoute {
     path: string;
@@ -24,5 +24,5 @@ export const publicRoutes: IRoute[] = [
 
 export const privateRoutes: IRoute[] = [
     {path: RouteNames.COURSES, exact: true, component: Courses},
-    {path: RouteNames.CALENDAR, exact: true, component: MiniCalendar}
+    {path: RouteNames.CALENDAR, exact: true, component: Calendar}
 ]

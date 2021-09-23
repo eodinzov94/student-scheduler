@@ -34,6 +34,11 @@ const TasksTable: FC<TasksProps> = ({course}) => {
     const {tasks, courseId} = course;
     const dispatch = useDispatch()
     const editableTask = useSelector<AppStateType>(state => state.courses.inputTask) as ITask | null
+    useEffect(()=>{
+        if(editableTask && editableTask.key === 'inputTask'){
+            dispatch(courseActions.setInputTask(null))
+        }
+    },[])
     const setEditableTask = (task: ITask | null) => {
         dispatch(courseActions.setInputTask(task))
     }
@@ -150,6 +155,7 @@ const TasksTable: FC<TasksProps> = ({course}) => {
     });
     return (
         <Table
+            scroll={{  x: '100vh' }}
             components={{
                 body: {
                     cell: EditableTaskCell,

@@ -8,7 +8,7 @@ import {ICourse} from "../../types/types";
 import {CourseCell} from './CourseCell';
 import {CloseCircleOutlined} from '@ant-design/icons';
 import TasksTable from "./TasksTable";
-import { calcCourseHours } from '../../utils/HelpFunctions';
+import {calcCourseHours} from '../../utils/HelpFunctions';
 
 const roundToOneDecimal = (num:number) => Math.round(num *10)/10
 const DataTable = () => {
@@ -22,7 +22,7 @@ const DataTable = () => {
     }, [])
     const columns = [
         {
-            title: 'Course', dataIndex: 'courseName', key: 'courseId',width:'33%',
+            title: 'Course', dataIndex: 'courseName', key: 'courseId',
             render: (_: any, course: ICourse) => <CourseCell course={course}
                                                              onEdit={(courseName: string) => {
                                                                  dispatch(editCourse(courseName, course.courseId))
@@ -32,13 +32,13 @@ const DataTable = () => {
             />,
         },
         {
-            title: 'Time for course', dataIndex: 'total', key: 'courseId',width:'33%',
+            title: 'Time for course', dataIndex: 'total', key: 'courseId',
             render: (_: any, course: ICourse) => <span>{coursesHoursCalc.find(({key})=> key === course.key)?.courseTotal || '0'} Hour(s)</span>
         },
         {
             title: 'Action',
             dataIndex: '',
-            key: 'courseId',width:'33%',
+            key: 'courseId',
             render: (_: any, course: ICourse) =>
                 <Popconfirm title="Sure to delete?" onConfirm={() => {
                     dispatch(deleteCourse(course.courseId))
@@ -46,7 +46,6 @@ const DataTable = () => {
                     <a  className='remove-btn'><CloseCircleOutlined /></a>
                 </Popconfirm>
             ,
-
         },
     ];
     const onClickAdd = () => {
@@ -56,6 +55,8 @@ const DataTable = () => {
     return (
 
                 <Table
+
+                    scroll={{  x: '100vh' }}
                     className="table h100 minWidth"
                     loading={isLoading}
                     columns={columns}
