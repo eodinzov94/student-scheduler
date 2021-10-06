@@ -3,6 +3,7 @@ import Login from "../components/Auth/Login";
 import Register from "../components/Auth/Register";
 import Courses from "../components/Courses/Courses";
 import {Calendar} from "../components/Calendar/Calendar";
+import Profile from "../components/Profile/Profile";
 
 export interface IRoute {
     path: string;
@@ -15,6 +16,7 @@ export enum RouteNames {
     REGISTER = '/register',
     COURSES = '/courses',
     CALENDAR = '/calendar',
+    PROFILE = '/profile'
 }
 
 export const publicRoutes: IRoute[] = [
@@ -24,5 +26,6 @@ export const publicRoutes: IRoute[] = [
 
 export const privateRoutes: IRoute[] = [
     {path: RouteNames.COURSES, exact: true, component: Courses},
-    {path: RouteNames.CALENDAR, exact: true, component: Calendar}
+    {path: RouteNames.CALENDAR, exact: true, component: Calendar},
+    {path: RouteNames.PROFILE, exact: true, component: Profile}
 ]

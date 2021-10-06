@@ -20,6 +20,7 @@ const Register:React.FC = (props) => {
     const [email,setEmail]= useState('')
     const [password,setPassword]= useState('')
     const [password2,setPassword2]= useState('')
+    const [name,setName] = useState('')
     const [form] = Form.useForm();
     const showError = () => {
         if(error) {
@@ -34,7 +35,7 @@ const Register:React.FC = (props) => {
     }
     useEffect(showError,[error])
     const registerHandler = ()=>{
-        dispatch(register(email,password))
+        dispatch(register(email,password,name))
     }
     return (
             <Layout>
@@ -60,6 +61,17 @@ const Register:React.FC = (props) => {
                                 }]}
                             >
                                 <Input onChange={(e) => setEmail(e.target.value)} value={email}/>
+                            </Form.Item>
+
+                            <Form.Item
+                                label="Name"
+                                name="name"
+                                rules={[{
+                                    required: true,
+                                    message: "Please enter your name"
+                                }]}
+                            >
+                                <Input onChange={(e) => setName(e.target.value)} value={name}/>
                             </Form.Item>
 
                             <Form.Item

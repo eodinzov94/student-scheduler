@@ -5,11 +5,10 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppStateType} from '../../redux/Store';
 import {Layout, Menu} from "antd";
 import {
-    BarChartOutlined,
     CalendarOutlined,
     CaretDownOutlined,
     LoginOutlined,
-    LogoutOutlined,
+    LogoutOutlined, ProfileOutlined,
     ScheduleOutlined,
     UserAddOutlined,
     UserOutlined
@@ -28,18 +27,21 @@ const Navbar: React.FC = () => {
         <Layout.Header className={"header minWidth"}>
             {isAuth ?
                 <Menu theme="dark" mode="horizontal">
-                    <SubMenu key="sub-menu-user" icon={<UserOutlined/>} title={<>{user?.email} <CaretDownOutlined /></>}>
-                        <Menu.Item key="logout" onClick={onLogout} icon={<LogoutOutlined />}> Logout</Menu.Item>
+                    <SubMenu key="sub-menu-user" icon={<UserOutlined/>}
+                             title={<>{user?.name || 'unknown'} <CaretDownOutlined/></>}>
+                        <Menu.Item key="profile" icon={<ProfileOutlined/>}>
+                            <Link to="/profile">Profile</Link>
+                        </Menu.Item>
+                        <Menu.Item key="logout" onClick={onLogout} icon={<LogoutOutlined/>}> Logout</Menu.Item>
                     </SubMenu>
-                    <Menu.Item key="courses"> <Link to="/courses"><ScheduleOutlined /> My Courses</Link></Menu.Item>
-                    <Menu.Item key="calendar"> <Link to="/calendar"><CalendarOutlined /> Calendar</Link></Menu.Item>
-                    <Menu.Item key="Chart"> <BarChartOutlined /> Chart</Menu.Item>
+                    <Menu.Item key="courses"> <Link to="/courses"><ScheduleOutlined/> My Courses</Link></Menu.Item>
+                    <Menu.Item key="calendar"> <Link to="/calendar"><CalendarOutlined/> Calendar</Link></Menu.Item>
                 </Menu>
 
                 :
                 <Menu theme="dark" mode="horizontal">
-                    <Menu.Item key="register"> <Link to="/register"><UserAddOutlined /> Register</Link></Menu.Item>
-                    <Menu.Item key="login"><Link to="/login"><LoginOutlined /> Login</Link></Menu.Item>
+                    <Menu.Item key="login"><Link to="/login"><LoginOutlined/> Login</Link></Menu.Item>
+                    <Menu.Item key="register"> <Link to="/register"><UserAddOutlined/> Register</Link></Menu.Item>
                 </Menu>
             }
         </Layout.Header>

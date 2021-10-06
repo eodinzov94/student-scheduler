@@ -3,7 +3,6 @@ import AuthService from "../../api/auth-api"
 import {BaseThunkType, InferActionsTypes} from '../Store';
 import {IUser} from "../../types/types";
 import {appActions} from "./app-reducer";
-
 let initialState = {
     user: null as (IUser | null),
     isAuth: false,
@@ -36,17 +35,18 @@ const authReducer = (state: InitialStateType = initialState, action: ActionsType
 }
 
 export const authActions = {
-    setAuthUserData: (userId: string | null, email: string | null, isAdmin: boolean, isAuth: boolean,) => ({
-        type: AuthActions.SET_USER_DATA, payload: {user: {userId, email, isAdmin}, isAuth}
+
+    setAuthUserData: (user:IUser,isAuth:boolean) => ({
+        type: AuthActions.SET_USER_DATA, payload: {user, isAuth}
     } as const),
     logout: () => ({
         type: AuthActions.LOGOUT,
-        payload: {user: {userId: null, email: null, isAdmin: false}, isAuth: false}
-    }),
+        payload: {user: null, isAuth: false}
+    } as const),
     setAuthError: (msg: string) => ({
         type: AuthActions.SET_AUTH_ERROR,
         payload: {error: msg}
-    }),
+    } as const),
 }
 
 export const getAuthUserData = (): ThunkType => async (dispatch) => {
@@ -54,8 +54,7 @@ export const getAuthUserData = (): ThunkType => async (dispatch) => {
         if (localStorage.getItem('accessToken')) {
             let meData = await AuthService.me()
             if (meData.resultCode === ResultCodesEnum.Success) {
-                let {userId, email, isAdmin} = meData.user;
-                dispatch(authActions.setAuthUserData(userId, email, isAdmin, true))
+                dispatch(authActions.setAuthUserData(meData.user,true))
             } else {
                 console.log(meData.message);
             }
@@ -84,10 +83,10 @@ export const logout = ():ThunkType => async (dispatch ) => {
     localStorage.removeItem("accessToken")
     dispatch(authActions.logout())
 }
-export const register = (email: string, password: string): ThunkType => async (dispatch) => {
+export const register = (email: string, password: string,name:string): ThunkType => async (dispatch) => {
     try {
         dispatch(appActions.setLoading(true))
-        let data = await AuthService.register(email, password);
+        let data = await AuthService.register(email, password,name);
         const accessToken = data.accessToken as string
         localStorage.setItem('accessToken', accessToken)
         await dispatch(getAuthUserData())

@@ -5,6 +5,7 @@ require('dotenv').config()
 const PORT = process.env.PORT || 3000
 const authRoute = require("./routes/auth")
 const coursesRoute = require("./routes/courses")
+const userRoute = require("./routes/user")
 const cors = require('cors')
 const errorMiddleware = require('./middleware/errormw');
 app.use(express.json())
@@ -14,6 +15,7 @@ app.use(cors({
 }));
 app.use("/api/auth", authRoute)
 app.use("/api/courses", coursesRoute)
+app.use("/api/user",userRoute)
 app.use(errorMiddleware);
 
 

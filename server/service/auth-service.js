@@ -18,7 +18,7 @@ class AuthService {
         return this.signToken(user);
     }
 
-    async register(email, password) {
+    async register(email, password, name) {
         const oldUser = await User.findOne({email});
         if (oldUser) {
             throw ApiError.BadRequest("User Already Exist. Please Login")
@@ -26,6 +26,7 @@ class AuthService {
         const encryptedPassword = await bcrypt.hash(password, 7);
         const newUser = new User(
             {
+                name,
                 email: email.toLowerCase(),
                 password: encryptedPassword,
                 isAdmin: false
@@ -39,7 +40,7 @@ class AuthService {
         if (!user) {
             throw ApiError.BadRequest("User does not exist")
         }
-        const userDto = new UserDto(user._id, user.email, user.createdAt)
+        const userDto = new UserDto(user._id, user.email, user.createdAt,user.name)
         return userDto;
     }
 

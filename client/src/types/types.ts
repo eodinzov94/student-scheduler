@@ -1,8 +1,9 @@
 import { Moment } from "moment";
 export interface IUser {
+    name: string | null
     userId: string | null
     email: string | null
-    isAdmin: boolean
+    createDate: Moment | string
 }
 
 export interface ICourse {

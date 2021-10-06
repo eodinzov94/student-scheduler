@@ -9,8 +9,8 @@ class AuthController{
             if (!errors.isEmpty()) {
                 return next(ApiError.BadRequest('Validation Error', errors.array()))
             }
-            const {email, password} = req.body;
-            const token = await authService.register(email, password)
+            const {email, password, name} = req.body;
+            const token = await authService.register(email, password,name)
             res.json({accessToken:token,resultCode:0});
         } catch (err) {
             next(err)

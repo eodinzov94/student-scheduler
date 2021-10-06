@@ -96,7 +96,7 @@ export const courseActions = {
 }
 
 
-export const thunkTemplate = async (thunkBody: (any),dispatch:AppDispatch)=> {
+const thunkTemplate = async (thunkBody: (any),dispatch:AppDispatch)=> {
     try {
         if (localStorage.getItem('accessToken')) {
             dispatch(courseActions.setLoading(true))

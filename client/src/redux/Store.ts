@@ -3,11 +3,14 @@ import thunk, {ThunkAction} from "redux-thunk";
 import authReducer from "./reducers/auth-reducer";
 import appReducer from "./reducers/app-reducer";
 import coursesReducer from "./reducers/courses-reducer";
+import profileReducer from "./reducers/profile-reducer"
+
 
 let rootReducer = combineReducers({
     auth:authReducer,
     app:appReducer,
-    courses:coursesReducer
+    courses:coursesReducer,
+    profile:profileReducer
 })
 
 type RootReducerType = typeof rootReducer;
