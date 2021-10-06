@@ -1,6 +1,6 @@
 import {ICourse, ITask} from "../types/types";
 import {CheckOutlined} from "@ant-design/icons";
-import moment from "moment";
+import moment, { Moment } from "moment";
 import React from "react";
 
 export const getColorAndTimeLeft = (task: ITask) => {
@@ -66,7 +66,6 @@ export const getEventColor = (priority: string) => {
 
 }
 
-
 export const priorityToNumber = (priority: string) => {
     switch (priority.toLocaleUpperCase()) {
         case 'HIGH':
@@ -79,6 +78,11 @@ export const priorityToNumber = (priority: string) => {
             return 0
     }
 }
-function f1(){
-
+export const CoursesToEventsByDate = (date :Moment , courses: ICourse[],compareBy:'day'|'month')=> {
+    return courses.filter(c => c.tasks.find(t =>
+        date.isSame(t.deadline, compareBy) && !t.completed)).map(course => ({
+        courseName: course.courseName, key: course.key,
+        date,
+        tasks: course.tasks.filter(t => date.isSame(t.deadline, compareBy))
+    }))
 }

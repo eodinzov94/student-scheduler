@@ -14,9 +14,6 @@ import {checkTaskChanges, getColorAndTimeLeft, priorityToNumber} from "../../uti
 interface TasksProps {
     course: ICourse
 }
-
-
-
 const NewTask: ITask = {
     taskId: 'inputTask',
     key: 'inputTask',
@@ -34,6 +31,7 @@ const TasksTable: FC<TasksProps> = ({course}) => {
     const {tasks, courseId} = course;
     const dispatch = useDispatch()
     const editableTask = useSelector<AppStateType>(state => state.courses.inputTask) as ITask | null
+    const [tasksData, setTasksData] = useState(tasks)
     useEffect(()=>{
         if(editableTask && editableTask.key === 'inputTask'){
             dispatch(courseActions.setInputTask(null))
@@ -42,7 +40,6 @@ const TasksTable: FC<TasksProps> = ({course}) => {
     const setEditableTask = (task: ITask | null) => {
         dispatch(courseActions.setInputTask(task))
     }
-    const [tasksData, setTasksData] = useState(tasks)
     useEffect(() => {
         setTasksData(tasks)
     }, [tasks])
@@ -52,15 +49,14 @@ const TasksTable: FC<TasksProps> = ({course}) => {
         setTasksData(prevState => [...prevState, NewTask])
     }
     const edit = (task: ITask) => {
-        if (tasksData.find(t => t.key === 'inputTask')) {
-            setTasksData(prevState => [...prevState.filter(t => t.key !== 'inputTask')])
-        }
         setEditableTask(task)
     };
-    const cancel = () => {
-        if (editableTask?.key === 'inputTask') {
-            setTasksData(prevState => [...prevState.filter(t => t.key !== 'inputTask')])
+    useEffect(()=> {
+        if(tasksData.find(t=>t.key==='inputTask') && editableTask?.key !== 'inputTask'){
+            setTasksData(prevState => prevState.filter(t=>t.key!=='inputTask'))
         }
+    },[editableTask])
+    const cancel = () => {
         setEditableTask(null)
     };
     const save = () => {
@@ -143,14 +139,16 @@ const TasksTable: FC<TasksProps> = ({course}) => {
         return {
             ...col,
             render: ShowComponentSelector(col.dataIndex as string, edit),
-            onCell: (task: ITask) => ({
+            onCell: (task: ITask) =>{
+                return {
                 task,
                 setInputTask: setEditableTask,
                 InputComponent: InputSelector(col.dataIndex as string),
                 dataIndex: col.dataIndex,
                 title: col.title,
-                editing: isEditing(task),
-            }),
+                editing: isEditing(task)
+                }
+            },
         };
     });
     return (
@@ -166,7 +164,7 @@ const TasksTable: FC<TasksProps> = ({course}) => {
             columns={mergedColumns}
             pagination={false}
             rowClassName="task-row"
-            footer={() => <Button disabled={!!editableTask} onClick={onAdd} shape="circle"><PlusOutlined/></Button>}
+            footer={() => <Button disabled={editableTask?.key==='inputTask'} onClick={onAdd} shape="circle"><PlusOutlined/></Button>}
         />
     );
 };
