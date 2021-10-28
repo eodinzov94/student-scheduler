@@ -2,6 +2,7 @@ import {AppDispatch, BaseThunkType, InferActionsTypes} from "../Store";
 import UserService from "../../api/user-api";
 import AuthService from "../../api/auth-api";
 import {Moment} from "moment";
+import {authActions, getAuthUserData} from "./auth-reducer";
 
 let initialState = {
     email: '',
@@ -82,6 +83,7 @@ export const changeName = (name: string): ThunkType => async (dispatch) => {
     await thunkTemplate(async () => {
         const data = await UserService.changeName(name)
         dispatch(profileActions.setUserData(data.user.email as string, data.user.name as string, data.user.createDate))
+        await dispatch(getAuthUserData())
         dispatch(profileActions.setSuccess('Name changed'))
     }, dispatch)
 }
