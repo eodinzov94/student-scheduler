@@ -8,6 +8,7 @@ let initialState = {
     name: '',
     createDate:'' as string | Moment,
     error: '',
+    success:'',
     isLoading: false
 };
 
@@ -15,6 +16,7 @@ export enum ProfileActions {
     SET_USER_DATA,
     SET_ERROR,
     SET_LOADING,
+    SET_SUCCESS
 }
 
 const profileReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
@@ -22,6 +24,7 @@ const profileReducer = (state: InitialStateType = initialState, action: ActionsT
         case ProfileActions.SET_ERROR:
         case ProfileActions.SET_USER_DATA:
         case ProfileActions.SET_LOADING:
+        case ProfileActions.SET_SUCCESS:
             return {
                 ...state,
                 ...action.payload
@@ -37,6 +40,9 @@ export const profileActions = {
     } as const),
     setError: (error: string) => ({
         type: ProfileActions.SET_ERROR, payload: {error}
+    } as const),
+    setSuccess: (success: string) => ({
+        type: ProfileActions.SET_SUCCESS, payload: {success}
     } as const),
     setLoading: (loading: boolean) => ({
         type: ProfileActions.SET_LOADING,
@@ -66,19 +72,24 @@ export const getUser = (): ThunkType => async (dispatch) => {
 }
 
 export const changePassword = (oldPassword: string, newPassword: string): ThunkType => async (dispatch) => {
-    await thunkTemplate(async () => await UserService.changePassword(oldPassword, newPassword), dispatch)
+    await thunkTemplate(async () =>{
+        await UserService.changePassword(oldPassword, newPassword)
+        dispatch(profileActions.setSuccess('Password changed'))
+    }, dispatch)
 }
 
 export const changeName = (name: string): ThunkType => async (dispatch) => {
     await thunkTemplate(async () => {
         const data = await UserService.changeName(name)
         dispatch(profileActions.setUserData(data.user.email as string, data.user.name as string, data.user.createDate))
+        dispatch(profileActions.setSuccess('Name changed'))
     }, dispatch)
 }
 export const changeEmail = (email: string): ThunkType => async (dispatch) => {
     await thunkTemplate(async () => {
         const data = await UserService.changeEmail(email)
         dispatch(profileActions.setUserData(data.user.email as string, data.user.name as string,data.user.createDate))
+        dispatch(profileActions.setSuccess('Email changed'))
     }, dispatch)
 }
 

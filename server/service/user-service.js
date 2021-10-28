@@ -29,6 +29,7 @@ class UserService {
 
     }
     async changeEmail(email,userId) {
+        console.log('here');
         const user = await User.findOne({_id: userId})
         if(!user){
             throw ApiError.BadRequest('User not found')
@@ -39,8 +40,7 @@ class UserService {
         }
         user.email = email.toLowerCase()
         await user.save()
-        return new UserDto(user._id, user.email, user.createdAt, user.name)
-        return UserDto();
+        return new UserDto(user._id, user.email, user.createdAt, user.name || 'unknown')
     }
 }
 

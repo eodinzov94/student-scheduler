@@ -5,7 +5,7 @@
 }
 
 .content {
-    min-width:640px ;
+    min-width: 640px;
     width: 100%;
     height: 100%;
     margin: auto;
@@ -47,12 +47,34 @@
 .task-row {
     background-color: #eaeaea;
 }
-.remove-btn{
+
+.remove-btn {
     color: crimson;
 }
-.remove-btn:hover{
+
+.remove-btn:hover {
     color: #d67b33;
 }
-.w100{
+
+.w100 {
     width: 100%;
+}
+.profile-data{
+    width: 75%;
+    margin-right: 10%;
+}
+.profile-action {
+
+}
+
+.profile-block-item {
+    display: flex;
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
+
+.profile-block {
+    display: flex;
+    flex-direction: column;
 }

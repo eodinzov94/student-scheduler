@@ -9,7 +9,7 @@ router.patch("/change-email",auth,
 router.patch("/change-name",auth,
     body('name').isLength({min: 1}),
     userController.changeName);
-router.post("/change-password",auth,
+router.patch("/change-password",auth,
     body('newPassword').isLength({min: 5, max: 32}),
     userController.changePassword);
 
