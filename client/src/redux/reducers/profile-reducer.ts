@@ -57,7 +57,7 @@ const thunkTemplate = async (thunkBody: (any), dispatch: AppDispatch) => {
             await thunkBody()
         }
     } catch (e: any) {
-        const msg = e.message || 'Unknown error'
+        const msg = e.response?.data?.message || 'Unknown error'
         dispatch(profileActions.setError(msg))
     } finally {
         dispatch(profileActions.setLoading(false))

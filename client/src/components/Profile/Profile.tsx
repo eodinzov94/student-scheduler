@@ -48,21 +48,20 @@ const Profile: FC = () => {
     return (
         <Layout>
             <Row justify="center" align="middle" className="h100">
-                <Card className="card" title="My profile">
+                <Card className="profile-card" title="My profile">
                     <Spin spinning={state.isLoading}>
                         <div className={'profile-block'}>
-                            <div className={'profile-block-item'}>
-                                {emailEdit ?
-                                    <Form
-                                        name="register"
-                                        layout="inline"
-                                        scrollToFirstError
-                                        autoComplete="off"
-                                        onFinish={() => {
-                                            dispatch(changeEmail(email))
-                                            setEmailEdit(false)
-                                        }}
-                                    >
+                            {emailEdit ?
+                                <Form
+                                    layout="inline"
+                                    name="email"
+                                    scrollToFirstError
+                                    autoComplete="off"
+                                    onFinish={() => {
+                                        dispatch(changeEmail(email))
+                                        setEmailEdit(false)
+                                    }}
+                                >
                                             <span className={'profile-data'}>
                                                 <Form.Item
                                                     label="Email"
@@ -76,39 +75,37 @@ const Profile: FC = () => {
                                                 <Input onChange={(e) => setEmail(e.target.value)} value={email}/>
                                             </Form.Item>
                                         </span>
-                                        <span className={'profile-action'}>
+                                    <span className={'profile-action'}>
                                             <Form.Item>
-                                            <Button type="link" onClick={()=>setEmailEdit(false)} >
-                                                    <UndoOutlined />
+                                            <Button type="link" onClick={() => setEmailEdit(false)}>
+                                                    <UndoOutlined/>
                                                 </Button>
                                                 <Button type="link" htmlType="submit">
                                                     <SaveOutlined/>
                                                 </Button>
                                                 </Form.Item>
                                         </span>
-                                    </Form>
-                                    :
-                                    <>
-                                        <span className={'profile-data'}><b>Email:</b> {state.email} </span>
-                                        <span className={'profile-action'}>
+                                </Form>
+                                :
+                                <div className={'profile-block-item'}>
+                                    <span className={'profile-data'}><b>Email:</b> {state.email} </span>
+                                    <span className={'profile-action'}>
                                             <Button type="link" onClick={() => setEmailEdit(true)}>
                                                     <EditOutlined/>
                                                 </Button>
                                             </span>
-                                    </>}
-                            </div>
-                            <div className={'profile-block-item'}>
-                                {nameEdit ?
-                                    <Form
-                                        onFinish={() => {
-                                            dispatch(changeName(name))
-                                            setNameEdit(false)
-                                        }}
-                                        name="name"
-                                        scrollToFirstError
-                                        autoComplete="off"
-                                        layout="inline"
-                                    >
+                                </div>}
+                            {nameEdit ?
+                                <Form
+                                    onFinish={() => {
+                                        dispatch(changeName(name))
+                                        setNameEdit(false)
+                                    }}
+                                    className={'profile-block-item'}
+                                    name="name"
+                                    scrollToFirstError
+                                    autoComplete="off"
+                                >
                                         <span className={'profile-data'}>
                                         <Form.Item
                                             label="Name"
@@ -122,40 +119,39 @@ const Profile: FC = () => {
                                         </Form.Item>
 
                                             </span>
-                                        <span className={'profile-action'}>
-                                                <Button type="link" onClick={()=>setNameEdit(false)} >
-                                                    <UndoOutlined />
+                                    <span className={'profile-action'}>
+                                                <Button type="link" onClick={() => setNameEdit(false)}>
+                                                    <UndoOutlined/>
                                                 </Button>
                                                 <Button type="link" htmlType="submit">
                                                     <SaveOutlined/>
                                                 </Button>
                                         </span>
-                                    </Form>
-                                    :
-                                    <>
-                                        <span className={'profile-data'}><b>Name:</b> {state.name} </span>
-                                        <span className={'profile-action'}>
+                                </Form>
+                                :
+                                <div className={'profile-block-item'}>
+                                    <span className={'profile-data'}><b>Name:</b> {state.name} </span>
+                                    <span className={'profile-action'}>
                                             <Button type="link" onClick={() => setNameEdit(true)}>
                                                     <EditOutlined/>
                                                 </Button>
                                             </span>
-                                    </>}
+                                </div>}
 
-                            </div>
-                            <div className={'profile-block-item'}>
-                                {pwEdit ?
-                                    <Form
-                                        onFinish={() => {
-                                            dispatch(changePassword(pwPrev, pw))
-                                            setPwEdit(false)
-                                        }}
-                                        name="name"
-                                        scrollToFirstError
-                                        autoComplete="off"
-                                        layout="inline"
-                                    >
+                            {pwEdit ?
+                                <Form
+                                    onFinish={() => {
+                                        dispatch(changePassword(pwPrev, pw))
+                                        setPwEdit(false)
+                                    }}
+                                    className={'profile-block-item'}
+                                    name="password"
+                                    scrollToFirstError
+                                    autoComplete="off"
+                                >
                                     <span className={'profile-data'}>
                                         <Form.Item
+
                                             label="Current Password"
                                             name="currentPassword"
                                             rules={[{
@@ -181,6 +177,7 @@ const Profile: FC = () => {
                                         <Form.Item
                                             label="Confirm Password"
                                             name="confirm"
+                                            className={'profile-block-item'}
                                             dependencies={['password']}
                                             hasFeedback
                                             rules={[
@@ -202,26 +199,26 @@ const Profile: FC = () => {
                                                             value={pw2}/>
                                         </Form.Item>
                                         </span>
-                                        <span className={'profile-action'}>
-                                                <Button type="link" onClick={()=>setPwEdit(false)} >
-                                                    <UndoOutlined />
+                                    <span className={'profile-action'}>
+                                                <Button type="link" onClick={() => setPwEdit(false)}>
+                                                    <UndoOutlined/>
                                                 </Button>
                                                 <Button type="link" htmlType="submit">
                                                     <SaveOutlined/>
                                                 </Button>
                                         </span>
-                                    </Form>
-                                    :
-                                    <>
-                                        <span className={'profile-data'}><b>Password: ******</b></span>
-                                        <span className={'profile-action'}>
-                                            <Button type="link" onClick={() => setPwEdit(true)}>
-                                                    <EditOutlined/>
-                                                </Button>
-                                            </span>
-                                    </>
-                                }
-                            </div>
+                                </Form>
+                                :
+                                <div className={'profile-block-item'}>
+                                    <span className={'profile-data'}><b>Password: ******</b></span>
+                                    <span className={'profile-action'}>
+                                                <Button type="link" onClick={() => setPwEdit(true)}>
+                                                        <EditOutlined/>
+                                                    </Button>
+                                                </span>
+                                </div>
+                            }
+
                             <div className={'profile-block-item'}>
                                 <span><b>Create Date:</b> {moment(state.createDate).format('YYYY-MM-DD')}</span>
                             </div>
