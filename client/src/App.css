@@ -60,15 +60,18 @@
     width: 100%;
 }
 .profile-data{
-    width: 75%;
+    order:1;
+    width: 60%;
     margin-right: 10%;
 }
 .profile-action {
-
+    order:2;
 }
 
 .profile-block-item {
     display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
     margin-bottom: 20px;
     padding: 10px;
 }
