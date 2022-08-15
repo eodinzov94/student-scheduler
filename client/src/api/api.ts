@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {ICourse, IUser} from "../types/types";
 
-export const API_URL = `http://localhost:5000/api`
+export const API_URL =process.env.REACT_APP_BACK_URL ||`http://localhost:5000/api`
 
 const $api = axios.create({
     withCredentials: true,

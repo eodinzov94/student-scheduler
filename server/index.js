@@ -8,6 +8,7 @@ const coursesRoute = require("./routes/courses")
 const userRoute = require("./routes/user")
 const cors = require('cors')
 const errorMiddleware = require('./middleware/errormw');
+const bcrypt = require("bcryptjs");
 app.use(express.json())
 app.use(cors({
     credentials: true,
@@ -26,6 +27,7 @@ async function runServer(){
             useUnifiedTopology: true
         }, () => console.log("Connected to MongoDB"))
         app.listen(PORT, () => console.log(`Server started on PORT : ${PORT}`))
+        console.log(await bcrypt.hash("12345", 7));
     }
     catch (e) {
         console.log(e)
