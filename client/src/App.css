@@ -4,8 +4,8 @@
 .content {
     position: relative;
     max-width:90vw;
-    min-height: calc(100vh - 128px);
-    margin: auto;
+    min-height: 100vh;
+    margin: 3rem auto;
 }
 
 .calendar {
@@ -73,7 +73,7 @@
     top: 0; bottom: 0; left: 0; right: 0;
     margin: 15px auto;
     max-width: 400px;
-    max-height: 640px;
+    max-height: 680px;
     border-radius: 15px;
 }
 

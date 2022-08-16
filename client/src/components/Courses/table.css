@@ -14,14 +14,6 @@
     padding: 4px;
     border: 1px solid darkgrey;
 }
-/*@media screen and (max-width:768px){
-    .gridtable, .gridtable thead, .gridtable tbody, .gridtable tr {
-        display: grid;
-        width: 100%;
-    }
-    .gridtable tr { grid-template-columns: auto auto auto; }
-}*/
-
 
 .gridtable table caption {
     font-size: 1.5em;

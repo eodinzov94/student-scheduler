@@ -19,6 +19,11 @@ const Profile: FC = () => {
     }, [])
     const state = useSelector<AppStateType>(state => state.profile) as InitialStateType
     const dispatch = useDispatch()
+    const disablePrevEditMode = () => {
+        setNameEdit(false)
+        setEmailEdit(false)
+        setPwEdit(false)
+    }
     const [emailEdit, setEmailEdit] = useState(false)
     const [nameEdit, setNameEdit] = useState(false)
     const [pwEdit, setPwEdit] = useState(false)
@@ -88,7 +93,10 @@ const Profile: FC = () => {
                                 <div className={'profile-block-item'}>
                                     <span className={'profile-data'}><b>Email:</b> {state.email} </span>
                                     <span className={'profile-action'}>
-                                            <Button type="link" onClick={() => setEmailEdit(true)}>
+                                            <Button type="link" onClick={() => {
+                                                disablePrevEditMode()
+                                                setEmailEdit(true)
+                                            }}>
                                                     <EditOutlined/>
                                                 </Button>
                                             </span>
@@ -130,7 +138,10 @@ const Profile: FC = () => {
                                 <div className={'profile-block-item'}>
                                     <span className={'profile-data'}><b>Name:</b> {state.name} </span>
                                     <span className={'profile-action'}>
-                                            <Button type="link" onClick={() => setNameEdit(true)}>
+                                            <Button type="link" onClick={() => {
+                                                disablePrevEditMode()
+                                                setNameEdit(true)
+                                            }}>
                                                     <EditOutlined/>
                                                 </Button>
                                             </span>
@@ -210,7 +221,10 @@ const Profile: FC = () => {
                                 <div className={'profile-block-item'}>
                                     <span className={'profile-data'}><b>Password: ******</b></span>
                                     <span className={'profile-action'}>
-                                                <Button type="link" onClick={() => setPwEdit(true)}>
+                                                <Button type="link" onClick={() => {
+                                                    disablePrevEditMode()
+                                                    setPwEdit(true)
+                                                }}>
                                                         <EditOutlined/>
                                                     </Button>
                                                 </span>

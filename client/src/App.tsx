@@ -20,11 +20,11 @@ const App: React.FC = () => {
                 <Spin spinning={isLoading}>
                     <Navbar/>
                     {isLoading ?
-                        <Row justify="center" align="middle">
-                            <Card >
+                        <div className="content" >
+                            <Card className="card">
                                 <Typography.Title style={{textAlign: "center"}}>App is Loading ...</Typography.Title>
                             </Card>
-                        </Row>
+                        </div>
                         :
                         <>
                             <div className="content" >
