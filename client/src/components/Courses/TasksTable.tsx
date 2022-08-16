@@ -74,7 +74,7 @@ const TasksTable: FC<TasksProps> = ({course}) => {
         dispatch(deleteTask(courseId, taskId))
     }
     const columns = [
-        {title: 'Task Type', dataIndex: 'taskType', key: 'taskId', editable: true ,width:'17%'},
+        {title: 'Task Type', dataIndex: 'taskType', key: 'taskId', editable: true ,width:'17%',},
         {title: 'Priority', dataIndex: 'priority', key: 'taskId', editable: true ,width:'12%',filterMultiple:true,
             filters: [
                 { text: 'High', value: 'HIGH' },
@@ -153,7 +153,7 @@ const TasksTable: FC<TasksProps> = ({course}) => {
     });
     return (
         <Table
-            scroll={{  x: '100vh' }}
+            className="gridtable"
             components={{
                 body: {
                     cell: EditableTaskCell,

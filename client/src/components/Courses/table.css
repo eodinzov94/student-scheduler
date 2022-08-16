@@ -1,8 +1,11 @@
-.table{
-    margin-top: 50px;
-    min-width: 880px;
-    max-width: 100%;
-    padding: 40px;
+.gridtable{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    table-layout: fixed;
+}
+.table-cell{
+
 }
 .trigger-input{
     cursor: pointer;
@@ -11,3 +14,82 @@
     padding: 4px;
     border: 1px solid darkgrey;
 }
+/*@media screen and (max-width:768px){
+    .gridtable, .gridtable thead, .gridtable tbody, .gridtable tr {
+        display: grid;
+        width: 100%;
+    }
+    .gridtable tr { grid-template-columns: auto auto auto; }
+}*/
+
+
+.gridtable table caption {
+    font-size: 1.5em;
+    margin: .5em 0 .75em;
+}
+
+
+
+@media screen and (max-width: 600px) {
+    .gridtable {
+        border: 0;
+    }
+
+    .gridtable caption {
+        font-size: 1.3em;
+    }
+
+    .gridtable thead {
+        border: none;
+        clip: rect(0 0 0 0);
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        width: 1px;
+    }
+    .table-cell{
+       min-width: 300px;
+    }
+    .gridtable tr {
+        border-bottom: 3px solid #ddd;
+        display: block;
+        margin-bottom: .625em;
+    }
+
+    .gridtable td {
+        border-bottom: 1px solid #ddd;
+        display: block;
+        font-size: .8em;
+        text-align: right;
+    }
+
+    .gridtable td::before {
+        /*
+        * aria-label has no advantage, it won't be read inside a table
+        content: attr(aria-label);
+        */
+        content: attr(data-label);
+        float: left;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    .gridtable td:last-child {
+        border-bottom: 0;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

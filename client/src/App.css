@@ -4,19 +4,8 @@
 .content {
     position: relative;
     max-width:90vw;
-
     min-height: calc(100vh - 128px);
     margin: auto;
-}
-
-.minResolution {
-    min-height: calc(100vh - 128px);
-    min-width: 900px;
-    margin: auto;
-}
-
-.maxWidth {
-    max-width: 1200px;
 }
 
 .calendar {
@@ -102,4 +91,14 @@
     max-height: 300px;
     border-radius: 15px;
     border: 1px solid #113047;
+}
+@media screen and (max-width:768px){
+    .card{
+        max-height: 500px;
+    }
+    .gridtable, .gridtable thead, .gridtable tbody, .gridtable tr {
+        display: grid;
+        width: 100%;
+    }
+    .gridtable tr { grid-template-columns: auto auto auto; }
 }

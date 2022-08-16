@@ -24,7 +24,7 @@ const Navbar: React.FC = () => {
         dispatch(logout())
     }
     return (
-        <Layout.Header className={"header minWidth"}>
+        <div>
             {isAuth ?
                 <Menu theme="dark" mode="horizontal">
                     <SubMenu key="sub-menu-user" icon={<UserOutlined/>}
@@ -44,7 +44,7 @@ const Navbar: React.FC = () => {
                     <Menu.Item key="register"> <Link to="/register"><UserAddOutlined/> Register</Link></Menu.Item>
                 </Menu>
             }
-        </Layout.Header>
+        </div>
     );
 }
 

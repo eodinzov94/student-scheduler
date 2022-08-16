@@ -27,7 +27,7 @@ export const EditableTaskCell: React.FC<EditableTaskCellProps> =
      }) => {
 
         return (
-            <td {...restProps}>
+            <td {...restProps} className="table-cell" data-label={title}>
                 {editing ?
                     <InputComponent setTask={setInputTask}/>
                     :

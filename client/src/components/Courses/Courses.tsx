@@ -55,9 +55,7 @@ const DataTable = () => {
     return (
 
                 <Table
-
-                    scroll={{  x: '100vh' }}
-                    className="table h100 minWidth"
+                    className=""
                     loading={isLoading}
                     columns={columns}
                     expandable={{
