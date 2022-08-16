@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {authActions, register} from '../../redux/reducers/auth-reducer';
 import {AppStateType} from "../../redux/Store";
-import {Button, Card, Form, Input, Layout, notification, Row} from "antd";
+import {Button, Card, Form, Input, notification} from "antd";
 
 const formItemLayout = {
     labelCol: {
@@ -38,8 +38,6 @@ const Register:React.FC = (props) => {
         dispatch(register(email,password,name))
     }
     return (
-            <Layout>
-                <Row justify="center" align="middle" className="h100">
                     <Card className="card">
                         <Form
                             {...formItemLayout}
@@ -86,7 +84,7 @@ const Register:React.FC = (props) => {
                             </Form.Item>
 
                             <Form.Item
-                                label="Confirm Password"
+                                label="Confirm"
                                 name="confirm"
                                 dependencies={['password']}
                                 hasFeedback
@@ -117,8 +115,6 @@ const Register:React.FC = (props) => {
                             </Form.Item>
                         </Form>
                     </Card>
-                </Row>
-            </Layout>
     );
 };
 

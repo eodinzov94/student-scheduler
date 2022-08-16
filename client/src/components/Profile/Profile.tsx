@@ -1,5 +1,5 @@
 import React, {FC, useEffect, useState} from 'react';
-import {Button, Card, Form, Input, Layout, notification, Row, Spin} from "antd";
+import {Button, Card, Form, Input, notification, Spin} from "antd";
 import {useDispatch, useSelector} from "react-redux";
 import {AppStateType} from "../../redux/Store";
 import {
@@ -46,8 +46,6 @@ const Profile: FC = () => {
         dispatch(profileActions.setSuccess(''))
     }
     return (
-        <Layout>
-            <Row justify="center" align="middle" className="h100">
                 <Card className="profile-card" title="My profile">
                     <Spin spinning={state.isLoading}>
                         <div className={'profile-block'}>
@@ -225,8 +223,6 @@ const Profile: FC = () => {
                         </div>
                     </Spin>
                 </Card>
-            </Row>
-        </Layout>
     );
 };
 

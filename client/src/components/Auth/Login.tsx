@@ -3,7 +3,7 @@ import "./auth.css"
 import {useDispatch, useSelector} from "react-redux";
 import {authActions, login} from '../../redux/reducers/auth-reducer';
 import {AppStateType} from "../../redux/Store";
-import {Button, Card, Form, Input, Layout, notification, Row} from "antd";
+import {Button, Card, Form, Input, notification} from "antd";
 
 
 const Login: React.FC = (props) => {
@@ -27,8 +27,6 @@ const Login: React.FC = (props) => {
         dispatch(login(email,password))
     }
     return (
-        <Layout>
-            <Row justify="center" align="middle" className="h100">
                 <Card className="card">
                     <Form
                         name="basic"
@@ -61,8 +59,6 @@ const Login: React.FC = (props) => {
                         </Form.Item>
                     </Form>
                 </Card>
-            </Row>
-        </Layout>
     );
 };
 

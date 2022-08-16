@@ -17,29 +17,27 @@ const App: React.FC = () => {
     }, [])
     return (
         <BrowserRouter>
-            <Layout className="minResolution">
                 <Spin spinning={isLoading}>
                     <Navbar/>
                     {isLoading ?
-                        <Row justify="center" align="middle" style={{height: "100vh"}}>
+                        <Row justify="center" align="middle">
                             <Card >
                                 <Typography.Title style={{textAlign: "center"}}>App is Loading ...</Typography.Title>
                             </Card>
                         </Row>
                         :
                         <>
-                            <Layout.Content className="maxWidth content" >
+                            <div className="content" >
                                 <AppRouter/>
-                            </Layout.Content>
+                            </div>
                         </>
                     }
-                    <Layout.Footer style={{textAlign: "center", backgroundColor: "gray"}} className="">
-                        <strong>
-                            Made by Evgeny Odinzov
-                        </strong>
-                    </Layout.Footer>
                 </Spin>
-            </Layout>
+            <Layout.Footer className="footer">
+                <strong>
+                    Made by Evgeny Odinzov
+                </strong>
+            </Layout.Footer>
         </BrowserRouter>
 
     );
